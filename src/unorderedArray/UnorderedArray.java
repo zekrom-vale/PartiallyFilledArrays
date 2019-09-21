@@ -89,18 +89,24 @@ public class UnorderedArray <E>{
 	@SuppressWarnings("unchecked")
 	public ArrayList<E> deleteAll(final E... values){
 		final ArrayList<Integer> indexes=this.findFlat(values);
-		final ArrayList<E> removed=new ArrayList<>(values.length*3);
+		final ArrayList<E> removed=new ArrayList<>(indexes.size());
+		//Put null into removed values and add to the removed list
 		for(final int i : indexes){
 			removed.add(this.get(i));
 			this.arr[i]=null;
 		}
+		//Collapse the gaps logicaly, not one space at a time
+		//Collapse skipping over large gaps of nulls
 		int gap=0;
 		for(int i=0; i<this.size-gap; i++){
+			//Find how many more nulls there are
 			while(this.arr[i+gap]==null){
 				gap++;
 			}
+			//Move the (i+gap)th element to the ith position
 			this.arr[i]=this.arr[i+gap];
 		}
+		//May want to remove pointless refferences from this.size-gap-1 to this.size-1
 		this.size-=gap;
 		return removed;
 	}
@@ -191,6 +197,7 @@ public class UnorderedArray <E>{
 	 * @return       A boolean indicating success
 	 */
 	public boolean deleteIndexQuick(final int index){
+		//index cannot be negative
 		if(0<=index){
 			throw new ArrayIndexOutOfBoundsException(
 				"Index cannot be negative"
@@ -224,7 +231,7 @@ public class UnorderedArray <E>{
 	 * Prints the array to the console
 	 */
 	public void display(){
-		System.out.println(this.toString());
+		System.out.println(this);
 	}
 
 	/**
