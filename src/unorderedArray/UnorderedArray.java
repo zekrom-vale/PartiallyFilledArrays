@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 /**
  * Unordered Partly filled Array, with no sorting functionality {@link UnorderedArrayCompare} for
- * sorting
+ * sorting, requires <code>Comparable&lt;E&gt;</code> interface to be implimented
  *
  * @param <E>
  *                The element type
