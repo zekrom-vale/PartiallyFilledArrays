@@ -111,6 +111,7 @@ public class OrderedArray <E extends Comparable<E>>{
 		if(flag.length>0&&flag[0]){
 			this.arr=new Object[orderedArray.arr.length];
 			for(int i=0; i<orderedArray.size; i++){
+				//Don't exactly know if this is correct
 				//Dynamicaly access the copy constructor to copy object
 				final Class<?> e=orderedArray.get(i).getClass();
 				this.arr[i]
@@ -216,6 +217,8 @@ public class OrderedArray <E extends Comparable<E>>{
 	 */
 	@SuppressWarnings("unchecked")
 	public E get(final int index){
+		//Does not need to be cheked as it must be E or a subtype of E
+		//Only way to violate this is within this class
 		return (E)this.arr[index];
 	}
 
@@ -255,24 +258,29 @@ public class OrderedArray <E extends Comparable<E>>{
 	 * @return       A boolean indicating success
 	 */
 	public boolean insert(final E value){
+		//Can the item fit?
 		if(this.size==this.arr.length) return false;
+		//Search for insertion position with psudo-binary search
 		int lowerBound=0, upperBound=this.size-1, index=0;
 		while(lowerBound<=upperBound){
 			index=(lowerBound+upperBound)/2;
 			if(value.compareTo(this.get(index))>0) lowerBound=++index;	// it's in upper half
 			else upperBound=index-1;	// it's in lower half
 		}
+		//Move all elements after the position to make space
 		for(int i=this.size-1; i>index-1; i--){
 			this.arr[i+1]=this.arr[i];
 		}
+		//Inserrt the value
 		this.arr[index]=value;
 		this.size++;
+		//Return suggess
 		return true;
 	}
 
 
 	/**
-	 * Adds all given values
+	 * Adds all given values in a more effecent way than calling {@link #insert(E)}
 	 *
 	 * @param  values
 	 *                    The values to add
@@ -315,12 +323,12 @@ public class OrderedArray <E extends Comparable<E>>{
 	 */
 	@SuppressWarnings("unchecked")
 	public int insert(final E... values){
-		final int[] between=new int[this.size+1],
-			position=new int[values.length];
+		final int[] between=new int[this.size+1],	//The array to hold the amout of items inbetween
+			position=new int[values.length];	//The array to hold the determined pre-positions of the values
 		for(int v=0; v<values.length; v++){
 			final E value=values[v];
-			int lowerBound=0, upperBound=this.size-1, index=0;
 			//Find where values[v] goes via binary simi-insertion
+			int lowerBound=0, upperBound=this.size-1, index=0;
 			while(lowerBound<=upperBound){
 				index=(lowerBound+upperBound)/2;
 				if(value.compareTo(this.get(index))>0){
@@ -330,10 +338,12 @@ public class OrderedArray <E extends Comparable<E>>{
 					upperBound=index-1;	// it's in lower half
 				}
 			}
+			//If the item should be put at the start
 			if(index==0&&values[v].compareTo(this.get(index))<0){
 				position[v]=0;
 				between[0]++;
 			}
+			//Otherwise
 			else{
 				position[v]=index;
 				between[index+1]++;
