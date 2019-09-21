@@ -53,4 +53,27 @@ public class UnorderedArrayCompare <E extends Comparable<E>>
 			}
 		}
 	}
+	
+	/**
+	 * Finds the one or two median values<br>
+	 * <b>Will sort the array!</b>
+	 *
+	 * @param  average
+	 *                     A function that finds the average between two elements<br>
+	 *                     Required as generics do not support math operators and not all objects can
+	 *                     work with average.
+	 *
+	 * @return         The median value
+	 */
+	public E median(final BinaryOperator<E> average){
+		//Sort the array to beable to find the median
+		this.oddEvenSort();
+		final int at=this.size/2;
+		//If even
+		if(this.size%2==0){
+			return average.apply(this.get(at), this.get(at+1));
+		}
+		//If odd
+		return this.get(at);
+	}
 }
