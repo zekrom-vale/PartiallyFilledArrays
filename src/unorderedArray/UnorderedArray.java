@@ -149,7 +149,7 @@ public class UnorderedArray <E>{
 	}
 
 	/**
-	 * Removes the given value and jumbles the order
+	 * Removes the given index and jumbles the order
 	 *
 	 * @param  index
 	 *                   The index to remove
@@ -276,13 +276,13 @@ public class UnorderedArray <E>{
 	 *
 	 * @param  target
 	 *                    The vale to look for
-	 * @return        An ArrayList of found integers, empty if not found
+	 * @return        An ArrayList of found indexes, empty if not found
 	 */
 	public ArrayList<Integer> findAll(final E target){
 		final ArrayList<Integer> indexes=new ArrayList<>();
-		for(int j=0; j<this.size; j++) if(
-			target.equals(this.arr[j])
-			) indexes.add(j);
+		for(int j=0; j<this.size; j++){
+			if(target.equals(this.arr[j])) indexes.add(j);
+		}
 		return indexes;
 	}
 
@@ -292,7 +292,7 @@ public class UnorderedArray <E>{
 	 *
 	 * @param  targets
 	 *                     A list of targets to find
-	 * @return         A UnorderedArray of ArrayList of Integers of the found values
+	 * @return         A UnorderedArray of ArrayList of Integers of the index values
 	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<Integer> findFlat(final E... targets){
