@@ -51,7 +51,7 @@ public class UnorderedArray <E>{
 	}
 
 	/**
-	 * Removes the given value
+	 * Removes the given value and maintains order
 	 *
 	 * @param  value
 	 *                   The value to remove
@@ -116,19 +116,54 @@ public class UnorderedArray <E>{
 	@SuppressWarnings("unchecked")
 	public ArrayList<E> deleteAllQuick(final E... values){
 		final ArrayList<Integer> indexes=this.findFlat(values);
-		final ArrayList<E> removed=new ArrayList<>(values.length*3);
+		final ArrayList<E> removed=new ArrayList<>(indexes.size());
+		//TODO Try to extract this as a method to reduce code
 		for(final int i : indexes){
+			//Slice off the end to prevent moving a to be removed value
 			while(indexes.contains(this.size)){
 				removed.add(this.get(this.size));
 				this.arr[this.size--]=null;
 			}
-			if(i!=this.size) this.arr[i]=this.arr[this.size--];
+			//If i is not at the end of the array replace it with the last element
+			if(i!=this.size){
+				this.arr[i]=this.arr[this.size];
+				this.arr[this.size--]=null;
+			}
+		}
+		return removed;
+	}
+	
+	
+	/**
+	 * Removes all instances of the indicated value and jumbles the order
+	 *
+	 * @param  values
+	 *                    The values to remove
+	 * @return        The removed values in a random order, does not correlate as elements are removed
+	 *                at the end and the middle
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<E> deleteAllQuick(final E value){
+		final ArrayList<Integer> indexes=this.findAll(value);
+		final ArrayList<E> removed=new ArrayList<>(indexes.size());
+		//TODO Try to extract this as a method to reduce code
+		for(final int i : indexes){
+			//Slice off the end to prevent moving a to be removed value
+			while(indexes.contains(this.size)){
+				removed.add(this.get(this.size));
+				this.arr[this.size--]=null;
+			}
+			//If i is not at the end of the array replace it with the last element
+			if(i!=this.size){
+				this.arr[i]=this.arr[this.size];
+				this.arr[this.size--]=null;
+			}
 		}
 		return removed;
 	}
 
 	/**
-	 * Removes the given index
+	 * Removes the given index and retains the order
 	 *
 	 * @param  index
 	 *                   The index to remove
@@ -170,7 +205,7 @@ public class UnorderedArray <E>{
 
 
 	/**
-	 * Removes the given value and jumbles the order
+	 * Removes the first given value and jumbles the order
 	 *
 	 * @param  value
 	 *                   The value to remove
@@ -184,7 +219,6 @@ public class UnorderedArray <E>{
 		}
 		return false;
 	}
-
 
 	/**
 	 * Prints the array to the console
