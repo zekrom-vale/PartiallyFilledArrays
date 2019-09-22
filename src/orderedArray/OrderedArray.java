@@ -27,6 +27,7 @@ public class OrderedArray <E extends Comparable<E>>{
 	 */
 	public static <T extends Comparable<T>> OrderedArray<T>
 	merge(final OrderedArray<T> arr1, final OrderedArray<T> arr2){
+		//Static methods still have access to private feilds of the same class, even if you don't use this
 		final OrderedArray<T> destArr
 		=new OrderedArray<>(arr1.arr.length+arr2.arr.length);
 		int i=0, j=0, k=0;
