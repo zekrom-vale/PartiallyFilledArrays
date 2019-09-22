@@ -2,12 +2,13 @@ package unorderedArray;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * Unordered Partly filled Array, with no sorting functionality {@link UnorderedArrayCompare} for
- * sorting, requires <code>Comparable&lt;E&gt;</code> interface to be implimented
+ * sorting, requires <code>Comparable&lt;E&gt;</code> interface to be implemented
  *
  * @param <E>
  *                The element type
@@ -120,51 +121,26 @@ public class UnorderedArray <E>{
 	 *                at the end and the middle
 	 */
 	@SuppressWarnings("unchecked")
-	public ArrayList<E> deleteAllQuick(final E... values){
+	public List<E> deleteAllQuick(final E... values){
 		final ArrayList<Integer> indexes=this.findFlat(values);
 		final ArrayList<E> removed=new ArrayList<>(indexes.size());
-		//TODO Try to extract this as a method to reduce code
-		for(final int i : indexes){
-			//Slice off the end to prevent moving a to be removed value
-			while(indexes.contains(this.size)){
-				removed.add(this.get(this.size));
-				this.arr[this.size--]=null;
-			}
-			//If i is not at the end of the array replace it with the last element
-			if(i!=this.size){
-				this.arr[i]=this.arr[this.size];
-				this.arr[this.size--]=null;
-			}
-		}
+		this.innerDeleteAllQuick(indexes, removed);
 		return removed;
 	}
-	
-	
+
+
 	/**
 	 * Removes all instances of the indicated value and jumbles the order
 	 *
-	 * @param  values
-	 *                    The values to remove
-	 * @return        The removed values in a random order, does not correlate as elements are removed
-	 *                at the end and the middle
+	 * @param  value
+	 *                   The values to remove
+	 * @return       The removed values in a random order, does not correlate as elements are removed at
+	 *               the end and the middle
 	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList<E> deleteAllQuick(final E value){
+	public List<E> deleteAllQuick(final E value){
 		final ArrayList<Integer> indexes=this.findAll(value);
 		final ArrayList<E> removed=new ArrayList<>(indexes.size());
-		//TODO Try to extract this as a method to reduce code
-		for(final int i : indexes){
-			//Slice off the end to prevent moving a to be removed value
-			while(indexes.contains(this.size)){
-				removed.add(this.get(this.size));
-				this.arr[this.size--]=null;
-			}
-			//If i is not at the end of the array replace it with the last element
-			if(i!=this.size){
-				this.arr[i]=this.arr[this.size];
-				this.arr[this.size--]=null;
-			}
-		}
+		this.innerDeleteAllQuick(indexes, removed);
 		return removed;
 	}
 
@@ -210,7 +186,6 @@ public class UnorderedArray <E>{
 		return false;
 	}
 
-
 	/**
 	 * Removes the first given value and jumbles the order
 	 *
@@ -226,6 +201,7 @@ public class UnorderedArray <E>{
 		}
 		return false;
 	}
+
 
 	/**
 	 * Prints the array to the console
@@ -274,7 +250,6 @@ public class UnorderedArray <E>{
 		return false;
 	}
 
-
 	/**
 	 * Find the given value
 	 *
@@ -286,6 +261,7 @@ public class UnorderedArray <E>{
 		for(int j=0; j<this.size; j++) if(target.equals(this.arr[j])) return j;
 		return -1;
 	}
+
 
 	/**
 	 * Finds the indexes of the given elements
@@ -327,7 +303,6 @@ public class UnorderedArray <E>{
 		return indexes;
 	}
 
-
 	/**
 	 * Finds the indexes of the given elements
 	 *
@@ -348,6 +323,7 @@ public class UnorderedArray <E>{
 		return index;
 	}
 
+
 	/**
 	 * For each element do the flowing
 	 *
@@ -360,7 +336,6 @@ public class UnorderedArray <E>{
 		}
 	}
 
-
 	/**
 	 * For each element do the flowing
 	 *
@@ -372,6 +347,7 @@ public class UnorderedArray <E>{
 			this.arr[i]=function.apply(this.get(i));
 		}
 	}
+
 
 	/**
 	 * @param  index
@@ -442,5 +418,26 @@ public class UnorderedArray <E>{
 		builder.append(this.arr[this.size-1]);//Don't append an extra ", "
 		builder.append("]");
 		return builder.toString();
+	}
+
+	/**
+	 * @param indexes
+	 * @param removed
+	 */
+	private void innerDeleteAllQuick(
+		final ArrayList<Integer> indexes, final ArrayList<E> removed
+		){
+		for(final int i : indexes){
+			//Slice off the end to prevent moving a to be removed value
+			while(indexes.contains(this.size)){
+				removed.add(this.get(this.size));
+				this.arr[this.size--]=null;
+			}
+			//If i is not at the end of the array replace it with the last element
+			if(i!=this.size){
+				this.arr[i]=this.arr[this.size];
+				this.arr[this.size--]=null;
+			}
+		}
 	}
 }
