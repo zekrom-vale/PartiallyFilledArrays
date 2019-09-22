@@ -1,17 +1,19 @@
 package unorderedArray;
 
+import java.util.function.BinaryOperator;
+
 /**
  * Unordered Partly filled Array, with sorting functionality {@link UnorderedArray} for non
  * comparable objects<br>
  * Requires Comparable implementation
- * 
+ *
  * @see       Comparable
  *
  * @param <E>
  *                The element type
  */
 public class UnorderedArrayCompare <E extends Comparable<E>>
-	extends UnorderedArray<E>{
+extends UnorderedArray<E>{
 
 	/**
 	 * Crates an empty unordered array
@@ -36,6 +38,32 @@ public class UnorderedArrayCompare <E extends Comparable<E>>
 		super(max, collection);
 	}
 
+	/**
+	 * Finds the one or two median values<br>
+	 * <b>Will sort the array!</b>
+	 *
+	 * @param  average
+	 *                     A function that finds the average between two elements<br>
+	 *                     Required as generics do not support math operators and not all objects can
+	 *                     work with average.
+	 *
+	 * @return         The median value
+	 */
+	public E median(final BinaryOperator<E> average){
+		//Sort the array to be able to find the median
+		this.oddEvenSort();
+		final int at=this.size()/2;
+		//If even
+		if(this.size()%2==0){
+			return average.apply(this.get(at), this.get(at+1));
+		}
+		//If odd
+		return this.get(at);
+	}
+
+	/**
+	 * Sorts the unordered array based on {@link Comparable} implimentation
+	 */
 	@SuppressWarnings("unchecked")
 	public void oddEvenSort(){
 		boolean done=false;
@@ -52,28 +80,5 @@ public class UnorderedArrayCompare <E extends Comparable<E>>
 				}
 			}
 		}
-	}
-	
-	/**
-	 * Finds the one or two median values<br>
-	 * <b>Will sort the array!</b>
-	 *
-	 * @param  average
-	 *                     A function that finds the average between two elements<br>
-	 *                     Required as generics do not support math operators and not all objects can
-	 *                     work with average.
-	 *
-	 * @return         The median value
-	 */
-	public E median(final BinaryOperator<E> average){
-		//Sort the array to beable to find the median
-		this.oddEvenSort();
-		final int at=this.size/2;
-		//If even
-		if(this.size%2==0){
-			return average.apply(this.get(at), this.get(at+1));
-		}
-		//If odd
-		return this.get(at);
 	}
 }
