@@ -8,6 +8,8 @@ import java.util.function.BinaryOperator;
  * Requires Comparable implementation
  *
  * @see       Comparable
+ * @see       #oddEvenSort()
+ * @see       #median(BinaryOperator)
  *
  * @param <E>
  *                The element type
@@ -39,6 +41,27 @@ extends UnorderedArray<E>{
 	}
 
 	/**
+	 * Sorts the unordered array based on {@link Comparable} implimentation via Bubble Sort
+	 */
+	public void bubbleSort(){
+		int upperBound=this.size()-1;
+		//Loop until upperBound is 1 (Can't compare just one item)
+		while(upperBound>1){
+			//Compare upto upperBound
+			for(int j=0; j<upperBound; j++){
+				if(this.get(j).compareTo(this.get(j+1))>0){
+					final E obj=this.get(j);
+					this.set(j, this.get(j+1));
+					this.set(j+1, obj);
+				}
+			}
+			//Decrease as this.get(upperBound) is sorted
+			upperBound--;
+
+		}
+	}
+
+	/**
 	 * Finds the one or two median values<br>
 	 * <b>Will sort the array!</b>
 	 *
@@ -51,7 +74,7 @@ extends UnorderedArray<E>{
 	 */
 	public E median(final BinaryOperator<E> average){
 		//Sort the array to be able to find the median
-		this.oddEvenSort();
+		this.bubbleSort();
 		final int at=this.size()/2;
 		//If even
 		if(this.size()%2==0){
@@ -62,9 +85,8 @@ extends UnorderedArray<E>{
 	}
 
 	/**
-	 * Sorts the unordered array based on {@link Comparable} implimentation
+	 * Sorts the unordered array based on {@link Comparable} implimentation via Odd Even Sort
 	 */
-	@SuppressWarnings("unchecked")
 	public void oddEvenSort(){
 		boolean done=false;
 		while(!done){
@@ -73,9 +95,9 @@ extends UnorderedArray<E>{
 				for(int i=0; i<this.size(); i+=2){
 					if(this.get(i+1).compareTo(this.get(i+1))>0){
 						done=false;
-						final Object obj=this.get(i);
+						final E obj=this.get(i);
 						this.set(i, this.get(i+1));
-						this.set(i+1, (E)obj);
+						this.set(i+1, obj);
 					}
 				}
 			}
