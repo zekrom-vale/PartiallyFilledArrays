@@ -7,6 +7,7 @@ import java.util.function.BinaryOperator;
  * comparable objects<br>
  * Requires Comparable implementation
  *
+ * @see       UnorderedArray
  * @see       Comparable
  * @see       #oddEvenSort()
  * @see       #median(BinaryOperator)
