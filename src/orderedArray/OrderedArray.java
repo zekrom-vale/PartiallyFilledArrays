@@ -54,6 +54,82 @@ public class OrderedArray <E extends Comparable<E>>{
 		return destArr;
 	}
 
+	/**
+	 * Merges two arrays together and returns a <u>new</u> OrderedArray as well as new copyies of the
+	 * object according to the copy constructior of the object
+	 *
+	 * @param  <T>
+	 *                                       The type of the arrays, must implement comparable
+	 * @param  arr1
+	 *                                       An OrderedArray to merge
+	 * @param  arr2
+	 *                                       Another OrderedArray to merge
+	 * @return                           A merged OrderedArray
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 */
+	@SuppressWarnings("javadoc")
+	public static <T extends Comparable<T>> OrderedArray<T>
+	mergeClone(final OrderedArray<T> arr1, final OrderedArray<T> arr2) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+		final OrderedArray<T> destArr
+		=new OrderedArray<>(arr1.arr.length+arr2.arr.length);
+		int i=0, j=0, k=0;
+		while(i<arr1.size&&j<arr2.size){
+			//Find the lowest value in arr1 and arr2 (Already sorted)
+			final T I=arr1.get(i), J=arr2.get(j);
+			if(I.compareTo(J)<0){
+				destArr.arr[k++]
+					=OrderedArray.clone(I);//If arr1 is smaller put arr1[i] in to dest
+				i++;
+			}
+			else{
+				destArr.arr[k++]
+					=OrderedArray.clone(J);//Otherwise put arr2[j] into dest
+				j++;
+			}
+		}
+		//If arr1 has more
+		if(i<arr1.size){
+			//Copy data from arr1 to dest
+			while(i<arr1.size){
+				destArr.arr[k++]
+					=OrderedArray.clone(arr1.get(i));//If arr1 is smaller put arr1[i] in to dest
+				i++;
+			}
+		}
+		//If arr2 has more
+		else if(j<arr2.size){
+			//Copy data from arr2 to dest
+			while(j<arr1.size){
+				destArr.arr[k++]
+					=OrderedArray.clone(arr1.get(j));//Otherwise put arr2[j] into dest
+				j++;
+			}
+		}
+		return destArr;
+	}
+
+	/**
+	 * @param  <T>
+	 * @param  obj
+	 * @return                           A new instance of the object
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
+	 */
+	@SuppressWarnings("unchecked")
+	private static <T extends Comparable<T>> T clone(final T obj)
+		throws InstantiationException, IllegalAccessException,
+		InvocationTargetException, NoSuchMethodException{
+		return (T)obj.getClass().getConstructor(obj.getClass())
+			.newInstance(obj);
+	}
+
 
 	/**
 	 * Reference to array
@@ -280,7 +356,7 @@ public class OrderedArray <E extends Comparable<E>>{
 
 
 	/**
-	 * Adds all given values in a more effecent way than calling {@link #insert(E)}
+	 * Adds all given values in a more effecent way than calling {@link #insert(Comparable)}
 	 *
 	 * @param  values
 	 *                    The values to add
