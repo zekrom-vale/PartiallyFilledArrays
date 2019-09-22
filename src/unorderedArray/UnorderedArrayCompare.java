@@ -41,6 +41,7 @@ extends UnorderedArray<E>{
 		super(max, collection);
 	}
 
+	 //TODO TEST
 	/**
 	 * Sorts the unordered array based on {@link Comparable} implimentation via Bubble Sort
 	 */
@@ -100,6 +101,27 @@ extends UnorderedArray<E>{
 						this.set(i, this.get(i+1));
 						this.set(i+1, obj);
 					}
+				}
+			}
+		}
+	}
+	
+	 //TODO TEST
+	/**
+	 * Sorts the unordered array based on {@link Comparable} implimentation via Selection Sort
+	 */
+	public void selectionSort(){
+		for(int out=0; out<this.size()-1; out++){
+			int min=out;
+			E minValue=this.get(min);
+			for(int in=out+1; in<this.size(); in++){
+				E inValue=this.get(in);
+				//If out of order swap values
+				if(inValue.compareTo(minValue)<0){
+					this.set(out, minValue);
+					this.set(in, inValue);
+					//Update the minumum value to be correct
+					E minValue=inValue;
 				}
 			}
 		}
