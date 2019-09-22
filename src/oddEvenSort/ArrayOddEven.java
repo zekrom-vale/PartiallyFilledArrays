@@ -2,30 +2,32 @@ package oddEvenSort;
 
 class ArrayOddEven
 {
-	private long[] a;                 // ref to array a
+	private final long[] a;                 // ref to array a
 	private int nElems;               // number of data items
 	//--------------------------------------------------------------
-	public ArrayBub(int max)          // constructor
-	   {
-	   a = new long[max];                 // create the array
-	   nElems = 0;                        // no items yet
-	   }
-	//--------------------------------------------------------------
-	public void insert(long value)    // put element into array
-	   {
-	   a[nElems] = value;             // insert it
-	   nElems++;                      // increment size
-	   }
+
+
+	public ArrayOddEven(final int max)          // constructor
+	{
+		this.a = new long[max];                 // create the array
+		this.nElems = 0;                        // no items yet
+	}
 	//--------------------------------------------------------------
 	public void display()             // displays array contents
-	   {
-	   for(int j=0; j<nElems; j++)       // for each element,
-	      System.out.print(a[j] + " ");  // display it
-	   System.out.println("");
-	   }
+	{
+		for(int j=0; j<this.nElems; j++)       // for each element,
+			System.out.print(this.a[j] + " ");  // display it
+		System.out.println("");
+	}
+	//--------------------------------------------------------------
+	public void insert(final long value)    // put element into array
+	{
+		this.a[this.nElems] = value;             // insert it
+		this.nElems++;                      // increment size
+	}
 	//--------------------------------------------------------------
 	public void oddEvenSort(){
-      		boolean done=false;
+		boolean done=false;
 		while(!done){
 			done=true;
 			for(int s=0; s<2; s++){
@@ -39,6 +41,6 @@ class ArrayOddEven
 				}
 			}
 		}
-	   }
+	}
 	//--------------------------------------------------------------
 }  // end class ArrayBub
