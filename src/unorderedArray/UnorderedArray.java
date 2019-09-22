@@ -20,7 +20,8 @@ public class UnorderedArray <E>{
 	/**
 	 * Array reference
 	 */
-	private final Object[] arr;
+	private final Object[] arr;	//Uses Object[] as E[] does not work
+	//And Array.newInstance(class) requires a value to get class and may not be the right class
 
 	/**
 	 * The current size of the array
