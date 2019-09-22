@@ -25,7 +25,20 @@ class ArrayOddEven
 	   }
 	//--------------------------------------------------------------
 	public void oddEvenSort(){
-      		
+      		boolean done=false;
+		while(!done){
+			done=true;
+			for(int s=0; s<2; s++){
+				for(int i=0; i<this.nElems; i+=2){
+					if(this.a[i+1]>this.a[i+1]){
+						done=false;
+						final long temp=this.a[i];
+						this.a[i]=this.a[i+1];
+						this.a[i+1]=temp;
+					}
+				}
+			}
+		}
 	   }
 	//--------------------------------------------------------------
 }  // end class ArrayBub
