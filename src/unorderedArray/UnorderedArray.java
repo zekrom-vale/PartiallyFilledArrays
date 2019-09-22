@@ -124,10 +124,7 @@ public class UnorderedArray <E>{
 	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<E> deleteAllQuick(final E... values){
-		final ArrayList<Integer> indexes=this.findFlat(values);
-		final ArrayList<E> removed=new ArrayList<>(indexes.size());
-		this.innerDeleteAllQuick(indexes, removed);
-		return removed;
+		return this.deleteIndexQuick(this.findFlat(values));
 	}
 
 
@@ -140,10 +137,7 @@ public class UnorderedArray <E>{
 	 *               the end and the middle
 	 */
 	public ArrayList<E> deleteAllQuick(final E value){
-		final ArrayList<Integer> indexes=this.findAll(value);
-		final ArrayList<E> removed=new ArrayList<>(indexes.size());
-		this.innerDeleteAllQuick(indexes, removed);
-		return removed;
+		return this.deleteIndexQuick(this.findAll(value));
 	}
 
 	/**
@@ -154,17 +148,38 @@ public class UnorderedArray <E>{
 	 * @return       A boolean indicating success
 	 */
 	public boolean deleteIndex(int index){
-		if(0<=index){
-			throw new ArrayIndexOutOfBoundsException(
-				"Index cannot be negative"
-				);
-		}
 		if(index<this.size){
 			while(index<this.size) this.arr[index]=this.arr[++index];
-			this.size--;
+			this.arr[this.size--]=null;
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Removes the given index and jumbles the order
+	 *
+	 * @param  index
+	 *                   The indexes to remove
+	 * @return       An ArrayList of removed elements
+	 */
+	private ArrayList<E> deleteIndexQuick(
+		final ArrayList<Integer> indexes
+		){
+		final ArrayList<E> removed=new ArrayList<>(indexes.size());
+		for(final int i : indexes){
+			//Slice off the end to prevent moving a to be removed value
+			while(indexes.contains(this.size)){
+				removed.add(this.get(this.size));
+				this.arr[this.size--]=null;
+			}
+			//If i is not at the end of the array replace it with the last element
+			if(i!=this.size){
+				this.arr[i]=this.arr[this.size];
+				this.arr[this.size--]=null;
+			}
+		}
+		return removed;
 	}
 
 	/**
@@ -175,18 +190,14 @@ public class UnorderedArray <E>{
 	 * @return       A boolean indicating success
 	 */
 	public boolean deleteIndexQuick(final int index){
-		//index cannot be negative
-		if(0<=index){
-			throw new ArrayIndexOutOfBoundsException(
-				"Index cannot be negative"
-				);
-		}
 		if(index<this.size){
-			this.arr[index]=this.arr[this.size--];
+			this.arr[index]=this.arr[this.size];
+			this.arr[this.size--]=null;
 			return true;
 		}
 		return false;
 	}
+
 
 	/**
 	 * Removes the first given value and jumbles the order
@@ -203,7 +214,6 @@ public class UnorderedArray <E>{
 		}
 		return false;
 	}
-
 
 	/**
 	 * Prints the array to the console
@@ -252,6 +262,7 @@ public class UnorderedArray <E>{
 		return false;
 	}
 
+
 	/**
 	 * Find the given value
 	 *
@@ -263,7 +274,6 @@ public class UnorderedArray <E>{
 		for(int j=0; j<this.size; j++) if(target.equals(this.arr[j])) return j;
 		return -1;
 	}
-
 
 	/**
 	 * Finds the indexes of the given elements
@@ -305,6 +315,7 @@ public class UnorderedArray <E>{
 		return indexes;
 	}
 
+
 	/**
 	 * Finds the indexes of the given elements
 	 *
@@ -325,7 +336,6 @@ public class UnorderedArray <E>{
 		return index;
 	}
 
-
 	/**
 	 * For each element do the flowing
 	 *
@@ -338,6 +348,7 @@ public class UnorderedArray <E>{
 		}
 	}
 
+
 	/**
 	 * For each element do the flowing
 	 *
@@ -349,7 +360,6 @@ public class UnorderedArray <E>{
 			this.arr[i]=function.apply(this.get(i));
 		}
 	}
-
 
 	/**
 	 * @param  index
@@ -420,26 +430,5 @@ public class UnorderedArray <E>{
 		builder.append(this.arr[this.size-1]);//Don't append an extra ", "
 		builder.append("]");
 		return builder.toString();
-	}
-
-	/**
-	 * @param indexes
-	 * @param removed
-	 */
-	private void innerDeleteAllQuick(
-		final ArrayList<Integer> indexes, final ArrayList<E> removed
-		){
-		for(final int i : indexes){
-			//Slice off the end to prevent moving a to be removed value
-			while(indexes.contains(this.size)){
-				removed.add(this.get(this.size));
-				this.arr[this.size--]=null;
-			}
-			//If i is not at the end of the array replace it with the last element
-			if(i!=this.size){
-				this.arr[i]=this.arr[this.size];
-				this.arr[this.size--]=null;
-			}
-		}
 	}
 }

@@ -41,7 +41,7 @@ extends UnorderedArray<E>{
 		super(max, collection);
 	}
 
-	 //TODO TEST
+	//TODO TEST
 	/**
 	 * Sorts the unordered array based on {@link Comparable} implimentation via Bubble Sort
 	 */
@@ -61,6 +61,40 @@ extends UnorderedArray<E>{
 			upperBound--;
 
 		}
+	}
+
+	//TODO TEST
+	/**
+	 * Sorts the unordered array based on {@link Comparable} implimentation via Insertion Sort
+	 */
+	public void insertionSort(){
+		//For each element except for the first one do the folowing
+		//Don't do it for the first one as it is in the correct position amoung itself
+		for(int out=1; out<this.size(); out++){
+			//Save the "inserted" element to move the others
+			final E temp=this.get(out);
+			//Move the existing elements to make room and find where it fits
+			int in=out;
+			while(in>0&&this.get(in-1).compareTo(temp)>=0){
+				this.set(in, this.get(--in));
+			}
+			//Set the last positon to refference
+			this.set(in, temp);
+		}
+	}
+
+
+
+	/**
+	 * Finds <b>only one</b>median value, ignores if the {@code size()} is even <br>
+	 * <b>Will sort the array!</b>
+	 *
+	 * @return         The median value
+	 */
+	public E median(){
+		//Sort the array to be able to find the median
+		this.bubbleSort();
+		return this.get(this.size()/2);
 	}
 
 	/**
@@ -85,34 +119,10 @@ extends UnorderedArray<E>{
 		//If odd
 		return this.get(at);
 	}
-	
-	
 
-	/**
-	 * Finds <b>only one</b>median value, ignores if the {@code size()} is even <br>
-	 * <b>Will sort the array!</b>
-	 *
-	 * @param  average
-	 *                     A function that finds the average between two elements<br>
-	 *                     Required as generics do not support math operators and not all objects can
-	 *                     work with average.
-	 *
-	 * @return         The median value
-	 */
-	public E median(){
-		//Sort the array to be able to find the median
-		this.bubbleSort();
-		return this.get(this.size()/2);
-	}
-	
 	/**
 	 * Finds the one or two median values and retuns it as an array<br>
 	 * <b>Will sort the array!</b>
-	 *
-	 * @param  average
-	 *                     A function that finds the average between two elements<br>
-	 *                     Required as generics do not support math operators and not all objects can
-	 *                     work with average.
 	 *
 	 * @return         The median value
 	 */
@@ -122,10 +132,11 @@ extends UnorderedArray<E>{
 		final int at=this.size()/2;
 		//If even
 		if(this.size()%2==0){
-			return new Object[]{this.get(at), this.get(at+1)}
+			return new Object[]{this.get(at), this.get(at+1)};
 		}
 		//If odd
-		return new Object[]{this.get(at)}
+		return new Object[]{this.get(at)};
+	}
 
 	/**
 	 * Sorts the unordered array based on {@link Comparable} implimentation via Odd Even Sort
@@ -146,45 +157,25 @@ extends UnorderedArray<E>{
 			}
 		}
 	}
-	
-	 //TODO TEST
+
+	//TODO TEST
 	/**
 	 * Sorts the unordered array based on {@link Comparable} implimentation via Selection Sort
 	 */
 	public void selectionSort(){
 		for(int out=0; out<this.size()-1; out++){
-			int min=out;
+			final int min=out;
 			E minValue=this.get(min);
 			for(int in=out+1; in<this.size(); in++){
-				E inValue=this.get(in);
+				final E inValue=this.get(in);
 				//If out of order swap values
 				if(inValue.compareTo(minValue)<0){
 					this.set(out, minValue);
 					this.set(in, inValue);
 					//Update the minumum value to be correct
-					E minValue=inValue;
+					minValue=inValue;
 				}
 			}
-		}
-	}
-	
-	 //TODO TEST
-	/**
-	 * Sorts the unordered array based on {@link Comparable} implimentation via Insertion Sort
-	 */
-	public void insertionSort(){
-		//For each element except for the first one do the folowing
-		//Don't do it for the first one as it is in the correct position amoung itself
-		for(int out=1; out<this.size(); out++){
-			//Save the "inserted" element to move the others
-			E temp=this.get(out);
-			//Move the existing elements to make room and find where it fits
-			int in=out;
-			while(in>0&&this.get(in-1).compareTo(temp)>=0){
-				this.set(in, this.get(--in));
-			}
-			//Set the last positon to refference
-			this.set(in, temp);
 		}
 	}
 }
