@@ -40,5 +40,17 @@ class ArrayIns
 	      a[in] = temp;                  // insert marked item
 	      }  // end for
 	   }  // end insertionSort()
+	
+	public long median(){
+		//Sort the array to be able to find the median
+		this.insertionSort();
+		final int at=this.nElems/2;
+		//If even
+		if(this.size()%2==0){
+			return (this.a[at]+this.a[at+1])/2L;
+		}
+		//If odd
+		return this.a[at];
+	}
 	//--------------------------------------------------------------
 }  // end class ArrayIns
