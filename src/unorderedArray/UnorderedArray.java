@@ -2,7 +2,6 @@ package unorderedArray;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -124,7 +123,7 @@ public class UnorderedArray <E>{
 	 *                at the end and the middle
 	 */
 	@SuppressWarnings("unchecked")
-	public List<E> deleteAllQuick(final E... values){
+	public ArrayList<E> deleteAllQuick(final E... values){
 		final ArrayList<Integer> indexes=this.findFlat(values);
 		final ArrayList<E> removed=new ArrayList<>(indexes.size());
 		this.innerDeleteAllQuick(indexes, removed);
@@ -140,7 +139,7 @@ public class UnorderedArray <E>{
 	 * @return       The removed values in a random order, does not correlate as elements are removed at
 	 *               the end and the middle
 	 */
-	public List<E> deleteAllQuick(final E value){
+	public ArrayList<E> deleteAllQuick(final E value){
 		final ArrayList<Integer> indexes=this.findAll(value);
 		final ArrayList<E> removed=new ArrayList<>(indexes.size());
 		this.innerDeleteAllQuick(indexes, removed);
