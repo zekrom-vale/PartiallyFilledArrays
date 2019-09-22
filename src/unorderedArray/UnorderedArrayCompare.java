@@ -126,4 +126,24 @@ extends UnorderedArray<E>{
 			}
 		}
 	}
+	
+	 //TODO TEST
+	/**
+	 * Sorts the unordered array based on {@link Comparable} implimentation via Insertion Sort
+	 */
+	public void insertionSort(){
+		//For each element except for the first one do the folowing
+		//Don't do it for the first one as it is in the correct position amoung itself
+		for(int out=1; out<this.size(); out++){
+			//Save the "inserted" element to move the others
+			E temp=this.get(out);
+			//Move the existing elements to make room and find where it fits
+			int in=out;
+			while(in>0&&this.get(in-1).compareTo(temp)>=0){
+				this.set(in, this.get(--in));
+			}
+			//Set the last positon to refference
+			this.set(in, temp);
+		}
+	}
 }
