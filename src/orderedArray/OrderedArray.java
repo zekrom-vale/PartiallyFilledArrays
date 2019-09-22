@@ -10,6 +10,8 @@ import java.util.function.BinaryOperator;
  * @param <E>
  *                The type of the array
  * @see       Comparable
+ * @see       #merge(OrderedArray, OrderedArray)
+ * @see       #mergeClone(OrderedArray, OrderedArray)
  */
 public class OrderedArray <E extends Comparable<E>>{
 	/**

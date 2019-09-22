@@ -10,6 +10,8 @@ import java.util.function.Function;
  * Unordered Partly filled Array, with no sorting functionality {@link UnorderedArrayCompare} for
  * sorting, requires <code>Comparable&lt;E&gt;</code> interface to be implemented
  *
+ * @see       #delete(Object)
+ *
  * @param <E>
  *                The element type
  */
