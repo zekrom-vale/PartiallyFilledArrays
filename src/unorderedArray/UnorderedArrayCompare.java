@@ -64,7 +64,7 @@ extends UnorderedArray<E>{
 	}
 
 	/**
-	 * Finds the one or two median values<br>
+	 * Finds the median value, if it is even it will use the {@code average} function <br>
 	 * <b>Will sort the array!</b>
 	 *
 	 * @param  average
@@ -85,6 +85,47 @@ extends UnorderedArray<E>{
 		//If odd
 		return this.get(at);
 	}
+	
+	
+
+	/**
+	 * Finds <b>only one</b>median value, ignores if the {@code size()} is even <br>
+	 * <b>Will sort the array!</b>
+	 *
+	 * @param  average
+	 *                     A function that finds the average between two elements<br>
+	 *                     Required as generics do not support math operators and not all objects can
+	 *                     work with average.
+	 *
+	 * @return         The median value
+	 */
+	public E median(){
+		//Sort the array to be able to find the median
+		this.bubbleSort();
+		return this.get(this.size()/2);
+	}
+	
+	/**
+	 * Finds the one or two median values and retuns it as an array<br>
+	 * <b>Will sort the array!</b>
+	 *
+	 * @param  average
+	 *                     A function that finds the average between two elements<br>
+	 *                     Required as generics do not support math operators and not all objects can
+	 *                     work with average.
+	 *
+	 * @return         The median value
+	 */
+	public Object[] medianBoth(){
+		//Sort the array to be able to find the median
+		this.bubbleSort();
+		final int at=this.size()/2;
+		//If even
+		if(this.size()%2==0){
+			return new Object[]{this.get(at), this.get(at+1)}
+		}
+		//If odd
+		return new Object[]{this.get(at)}
 
 	/**
 	 * Sorts the unordered array based on {@link Comparable} implimentation via Odd Even Sort
