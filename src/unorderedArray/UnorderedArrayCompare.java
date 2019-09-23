@@ -43,13 +43,13 @@ extends UnorderedArray<E>{
 
 	//TODO TEST
 	/**
-	 * Sorts the unordered array based on {@link Comparable} implimentation via Bubble Sort
+	 * Sorts the unordered array based on {@link Comparable} implementation via Bubble Sort
 	 */
 	public void bubbleSort(){
 		int upperBound=this.size()-1;
 		//Loop until upperBound is 1 (Can't compare just one item)
 		while(upperBound>1){
-			//Compare upto upperBound
+			//Compare up to upperBound
 			for(int j=0; j<upperBound; j++){
 				if(this.get(j).compareTo(this.get(j+1))>0){
 					final E obj=this.get(j);
@@ -65,11 +65,11 @@ extends UnorderedArray<E>{
 
 	//TODO TEST
 	/**
-	 * Sorts the unordered array based on {@link Comparable} implimentation via Insertion Sort
+	 * Sorts the unordered array based on {@link Comparable} implementation via Insertion Sort
 	 */
 	public void insertionSort(){
-		//For each element except for the first one do the folowing
-		//Don't do it for the first one as it is in the correct position amoung itself
+		//For each element except for the first one do the flowing
+		//Don't do it for the first one as it is in the correct position among itself
 		for(int out=1; out<this.size(); out++){
 			//Save the "inserted" element to move the others
 			final E temp=this.get(out);
@@ -78,7 +78,7 @@ extends UnorderedArray<E>{
 			while(in>0&&this.get(in-1).compareTo(temp)>=0){
 				this.set(in, this.get(--in));
 			}
-			//Set the last positon to refference
+			//Set the last position to reference
 			this.set(in, temp);
 		}
 	}
@@ -121,10 +121,10 @@ extends UnorderedArray<E>{
 	}
 
 	/**
-	 * Finds the one or two median values and retuns it as an array<br>
+	 * Finds the one or two median values and returns it as an array<br>
 	 * <b>Will sort the array!</b>
 	 *
-	 * @return         The median value
+	 * @return The median value
 	 */
 	public Object[] medianBoth(){
 		//Sort the array to be able to find the median
@@ -139,7 +139,7 @@ extends UnorderedArray<E>{
 	}
 
 	/**
-	 * Sorts the unordered array based on {@link Comparable} implimentation via Odd Even Sort
+	 * Sorts the unordered array based on {@link Comparable} implementation via Odd Even Sort
 	 */
 	public void oddEvenSort(){
 		boolean done=false;
@@ -160,7 +160,7 @@ extends UnorderedArray<E>{
 
 	//TODO TEST
 	/**
-	 * Sorts the unordered array based on {@link Comparable} implimentation via Selection Sort
+	 * Sorts the unordered array based on {@link Comparable} implementation via Selection Sort
 	 */
 	public void selectionSort(){
 		for(int out=0; out<this.size()-1; out++){
@@ -172,7 +172,7 @@ extends UnorderedArray<E>{
 				if(inValue.compareTo(minValue)<0){
 					this.set(out, minValue);
 					this.set(in, inValue);
-					//Update the minumum value to be correct
+					//Update the minimum value to be correct
 					minValue=inValue;
 				}
 			}

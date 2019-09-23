@@ -43,7 +43,7 @@ class ArrayIns
 		this.size++;                      // increment size
 	}
 	/**
-	 * Sort the array via Insertion Sorting by standard numical order
+	 * Sort the array via Insertion Sorting by standard numerical order
 	 */
 	public void insertionSort(){
 		int in, out;
