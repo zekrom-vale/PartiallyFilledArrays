@@ -3,29 +3,25 @@ package oddEvenSort;
 class ArrayOddEven
 {
 	private final long[] a;                 // ref to array a
-	private int nElems;               // number of data items
-	//--------------------------------------------------------------
+	private int nElems;               // number of data items
 
 
 	public ArrayOddEven(final int max)          // constructor
 	{
 		this.a = new long[max];                 // create the array
 		this.nElems = 0;                        // no items yet
-	}
-	//--------------------------------------------------------------
+	}
 	public void display()             // displays array contents
 	{
 		for(int j=0; j<this.nElems; j++)       // for each element,
 			System.out.print(this.a[j] + " ");  // display it
 		System.out.println("");
-	}
-	//--------------------------------------------------------------
+	}
 	public void insert(final long value)    // put element into array
 	{
 		this.a[this.nElems] = value;             // insert it
 		this.nElems++;                      // increment size
-	}
-	//--------------------------------------------------------------
+	}
 	public void oddEvenSort(){
 		boolean done=false;
 		while(!done){
@@ -41,6 +37,5 @@ class ArrayOddEven
 				}
 			}
 		}
-	}
-	//--------------------------------------------------------------
+	}
 }  // end class ArrayBub

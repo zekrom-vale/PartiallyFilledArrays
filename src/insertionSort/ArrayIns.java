@@ -3,27 +3,23 @@ package insertionSort;
 class ArrayIns
 {
 	private final long[] a;                 // ref to array a
-	private int size;               // number of data items
-	//--------------------------------------------------------------
+	private int size;               // number of data items
 	public ArrayIns(final int max)          // constructor
 	{
 		this.a = new long[max];                 // create the array
 		this.size=0;                        // no items yet
-	}
-	//--------------------------------------------------------------
+	}
 	public void display()             // displays array contents
 	{
 		for(int j=0; j<this.size; j++)       // for each element,
 			System.out.print(this.a[j] + " ");  // display it
 		System.out.println("");
-	}
-	//--------------------------------------------------------------
+	}
 	public void insert(final long value)    // put element into array
 	{
 		this.a[this.size]=value;             // insert it
 		this.size++;                      // increment size
-	}
-	//--------------------------------------------------------------
+	}
 	public void insertionSort()
 	{
 		int in, out;
@@ -51,6 +47,5 @@ class ArrayIns
 		}
 		//If odd
 		return this.a[at];
-	}
-	//--------------------------------------------------------------
+	}
 }  // end class ArrayIns
