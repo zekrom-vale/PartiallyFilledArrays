@@ -1,4 +1,4 @@
-package oddEvenSort;
+package problem3;
 
 class ArrayOddEven
 {

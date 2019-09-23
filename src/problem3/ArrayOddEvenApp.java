@@ -1,4 +1,4 @@
-package oddEvenSort;
+package problem3;
 
 class ArrayOddEvenApp{
 	public static void main(final String[] args)
