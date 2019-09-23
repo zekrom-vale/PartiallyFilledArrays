@@ -1,4 +1,4 @@
-package orderedArray;
+package problem1;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;

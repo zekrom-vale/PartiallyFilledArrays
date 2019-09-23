@@ -1,4 +1,4 @@
-package orderedArray;
+package problem1;
 
 /**
  * OrderedArrayApp

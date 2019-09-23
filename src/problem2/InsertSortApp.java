@@ -1,4 +1,4 @@
-package insertionSort;
+package problem2;
 
 class InsertSortApp
 {
