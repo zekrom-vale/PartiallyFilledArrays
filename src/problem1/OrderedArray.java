@@ -5,15 +5,41 @@ import java.util.Arrays;
 import java.util.function.BinaryOperator;
 
 /**
- * Partly Filled Ordered Array, must implement comparable&lt;Type&gt;
+ * OrderedArray class<br>
  *
- * @param <E>
- *                The type of the array
- * @see       Comparable
- * @see       #merge(OrderedArray, OrderedArray)
- * @see       #mergeClone(OrderedArray, OrderedArray)
+ * Implements a complex {@code UnnorderedArray<E>} that provides sorting, merging, insertion,
+ * multi-insertion, deletion, multi-deletion, searching, median values, printing, and cloning all
+ * with generics.
+ *
+ * Partly Filled Ordered Array, must implement {@code Comparable<Type>}
+ *
+ * @author     Shawn Graven (Zekrom)
+ * @date       9/23/19
+ *
+ * @param  <E>
+ *                 The type of the array
+ * @see        Comparable
+ * @see        #merge(OrderedArray, OrderedArray)
+ * @see        #mergeClone(OrderedArray, OrderedArray)
  */
 public class OrderedArray <E extends Comparable<E>>{
+	/**
+	 * @param  <T>
+	 * @param  obj
+	 * @return                           A new instance of the object
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
+	 */
+	@SuppressWarnings("unchecked")
+	private static <T extends Comparable<T>> T clone(final T obj)
+		throws InstantiationException, IllegalAccessException,
+		InvocationTargetException, NoSuchMethodException{
+		return (T)obj.getClass().getConstructor(obj.getClass())
+			.newInstance(obj);
+	}
+
 	/**
 	 * Merges two arrays together and returns a <u>new</u> OrderedArray
 	 *
@@ -114,23 +140,6 @@ public class OrderedArray <E extends Comparable<E>>{
 			}
 		}
 		return destArr;
-	}
-
-	/**
-	 * @param  <T>
-	 * @param  obj
-	 * @return                           A new instance of the object
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchMethodException
-	 */
-	@SuppressWarnings("unchecked")
-	private static <T extends Comparable<T>> T clone(final T obj)
-		throws InstantiationException, IllegalAccessException,
-		InvocationTargetException, NoSuchMethodException{
-		return (T)obj.getClass().getConstructor(obj.getClass())
-			.newInstance(obj);
 	}
 
 

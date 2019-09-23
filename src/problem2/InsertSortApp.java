@@ -1,7 +1,24 @@
 package problem2;
 
-class InsertSortApp
-{
+/**
+ * InsertSortApp class
+ *
+ * Drives the {@link ArrayIns} class, inserts the following numbers into an {@link ArrayIns} object
+ *
+ * <pre>
+ * 77, 99, 44, 55, 22, 88, 11, 0, 66, 33
+ * </pre>
+ *
+ * @author Shawn Graven (Zekrom)
+ * @date   9/23/19
+ *
+ * @see    #main(String[])
+ */
+public class InsertSortApp{
+	/**
+	 * @param args
+	 *                 Args
+	 */
 	public static void main(final String[] args)
 	{
 		final int maxSize = 100;            // array size
@@ -24,5 +41,7 @@ class InsertSortApp
 		arr.insertionSort();          // insertion-sort them
 
 		arr.display();                // display them again
-	}  // end main()
-}  // end class InsertSortApp
+
+		System.out.println(arr.median());	//Find the median
+	}
+}//Don't need the end comments, there are helpful highlights on the right

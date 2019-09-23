@@ -1,7 +1,15 @@
 package problem2;
 
-class ArrayIns
-{
+/**
+ * ArrayIns class<br>
+ * Implements a simple {@code UnnorderedArray<long>} that provides an Odd Even Sorting method.
+ *
+ * @author Shawn Graven (Zekrom)
+ * @date   9/23/19
+ *
+ * @see    #median()
+ */
+public class ArrayIns{
 	/**
 	 * The reference to the long array
 	 */
@@ -79,3 +87,6 @@ class ArrayIns
 		return this.arr[at];
 	}
 }
+
+//No need to note end or start as current block is indicated on the left by the number bar
+//May not be available pre 4.13 and may be under settings

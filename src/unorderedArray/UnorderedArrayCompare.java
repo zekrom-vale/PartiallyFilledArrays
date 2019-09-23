@@ -3,17 +3,22 @@ package unorderedArray;
 import java.util.function.BinaryOperator;
 //TODO import  Array_sample code and Simple Sorting_sample
 /**
+ * UnorderedArrayCompare class<br>
+ *
  * Unordered Partly filled Array, with sorting functionality {@link UnorderedArray} for non
  * comparable objects<br>
  * Requires Comparable implementation
  *
- * @see       UnorderedArray
- * @see       Comparable
- * @see       #oddEvenSort()
- * @see       #median(BinaryOperator)
+ * @author     Shawn Graven (Zekrom)
+ * @date       9/23/19
  *
- * @param <E>
- *                The element type
+ * @see        UnorderedArray
+ * @see        Comparable
+ * @see        #oddEvenSort()
+ * @see        #median(BinaryOperator)
+ *
+ * @param  <E>
+ *                 The element type
  */
 public class UnorderedArrayCompare <E extends Comparable<E>>
 extends UnorderedArray<E>{

@@ -6,13 +6,18 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
+ * UnorderedArray class<br>
+ *
  * Unordered Partly filled Array, with no sorting functionality {@link UnorderedArrayCompare} for
  * sorting, requires <code>Comparable&lt;E&gt;</code> interface to be implemented
  *
- * @see       #delete(Object)
+ * @author     Shawn Graven (Zekrom)
+ * @date       9/23/19
  *
- * @param <E>
- *                The element type
+ * @see        #delete(Object)
+ *
+ * @param  <E>
+ *                 The element type
  */
 
 public class UnorderedArray <E>{

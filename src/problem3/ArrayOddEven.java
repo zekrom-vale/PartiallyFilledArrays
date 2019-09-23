@@ -1,7 +1,16 @@
 package problem3;
 
-class ArrayOddEven
-{
+/**
+ * ArrayOddEven class<br>
+ * Implements a simple {@code UnnorderedArray<long>} that provides an Odd Even Sorting method.
+ *
+ * @author Shawn Graven (Zekrom)
+ * @date   9/23/19
+ *
+ * @see    #ArrayOddEven(int)
+ * @see    #oddEvenSort()
+ */
+public class ArrayOddEven{
 	/**
 	 * The reference to the long array
 	 */
@@ -41,16 +50,16 @@ class ArrayOddEven
 		this.size++;                      // increment size
 	}
 	/**
-	 * Sorts the array via Odd Even Sorting, using standard numrical order
+	 * Sorts the array via Odd Even Sorting, using standard numerical order
 	 */
 	public void oddEvenSort(){
-		boolean done=false;
-		while(!done){
-			done=true;
+		boolean sorted=false;
+		while(!sorted){
+			sorted=true;
 			for(int s=0; s<2; s++){
-				for(int i=0; i<this.size; i+=2){
+				for(int i=s; i<this.size-1; i+=2){
 					if(this.arr[i]>this.arr[i+1]){
-						done=false;
+						sorted=false;
 						final long temp=this.arr[i];
 						this.arr[i]=this.arr[i+1];
 						this.arr[i+1]=temp;
