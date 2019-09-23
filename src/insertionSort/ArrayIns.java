@@ -3,32 +3,32 @@ package insertionSort;
 class ArrayIns
 {
 	private final long[] a;                 // ref to array a
-	private int nElems;               // number of data items
+	private int size;               // number of data items
 	//--------------------------------------------------------------
 	public ArrayIns(final int max)          // constructor
 	{
 		this.a = new long[max];                 // create the array
-		this.nElems = 0;                        // no items yet
+		this.size=0;                        // no items yet
 	}
 	//--------------------------------------------------------------
 	public void display()             // displays array contents
 	{
-		for(int j=0; j<this.nElems; j++)       // for each element,
+		for(int j=0; j<this.size; j++)       // for each element,
 			System.out.print(this.a[j] + " ");  // display it
 		System.out.println("");
 	}
 	//--------------------------------------------------------------
 	public void insert(final long value)    // put element into array
 	{
-		this.a[this.nElems] = value;             // insert it
-		this.nElems++;                      // increment size
+		this.a[this.size]=value;             // insert it
+		this.size++;                      // increment size
 	}
 	//--------------------------------------------------------------
 	public void insertionSort()
 	{
 		int in, out;
 
-		for(out=1; out<this.nElems; out++)     // out is dividing line
+		for(out=1; out<this.size; out++)     // out is dividing line
 		{
 			final long temp = this.a[out];            // remove marked item
 			in = out;                      // start shifts at out
@@ -44,9 +44,9 @@ class ArrayIns
 	public long median(){
 		//Sort the array to be able to find the median
 		this.insertionSort();
-		final int at=this.nElems/2;
+		final int at=this.size/2;
 		//If even
-		if(this.nElems%2==0){
+		if(this.size%2==0){
 			return (this.a[at]+this.a[at+1])/2L;
 		}
 		//If odd

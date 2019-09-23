@@ -3,35 +3,35 @@ package selectionSort;
 class ArraySel
 {
 	private final long[] a;                 // ref to array a
-	private int nElems;               // number of data items
+	private int size;               // number of data items
 	//--------------------------------------------------------------
 	public ArraySel(final int max)          // constructor
 	{
 		this.a = new long[max];                 // create the array
-		this.nElems = 0;                        // no items yet
+		this.size=0;                        // no items yet
 	}
 	//--------------------------------------------------------------
 	public void display()             // displays array contents
 	{
-		for(int j=0; j<this.nElems; j++)       // for each element,
+		for(int j=0; j<this.size; j++)       // for each element,
 			System.out.print(this.a[j] + " ");  // display it
 		System.out.println("");
 	}
 	//--------------------------------------------------------------
 	public void insert(final long value)    // put element into array
 	{
-		this.a[this.nElems] = value;             // insert it
-		this.nElems++;                      // increment size
+		this.a[this.size]=value;             // insert it
+		this.size++;                      // increment size
 	}
 	//--------------------------------------------------------------
 	public void selectionSort()
 	{
 		int out, in, min;
 
-		for(out=0; out<this.nElems-1; out++)   // outer loop
+		for(out=0; out<this.size-1; out++)   // outer loop
 		{
 			min = out;                     // minimum
-			for(in=out+1; in<this.nElems; in++) // inner loop
+			for(in=out+1; in<this.size; in++) // inner loop
 				if(this.a[in] < this.a[min] )         // if min greater,
 					min = in;               // we have a new min
 			this.swap(out, min);                // swap them
