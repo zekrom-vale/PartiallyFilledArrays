@@ -7,9 +7,13 @@ import java.util.function.BinaryOperator;
 /**
  * OrderedArray class<br>
  *
- * Implements a complex {@code UnnorderedArray<E>} that provides sorting, merging, insertion,
+ * Implements a complex {@link OrderedArray} that provides sorting, merging, insertion,
  * multi-insertion, deletion, multi-deletion, searching, median values, printing, and cloning all
- * with generics.
+ * with generics. <br>
+ * <br>
+ * Code has been revised to be generic and adds many methods, see first method for quick grading
+ * {@link #merge(OrderedArray, OrderedArray)} (For shallow copy not reference copy) and
+ * {@link #mergeClone(OrderedArray, OrderedArray)} (For deep copy)
  *
  * Partly Filled Ordered Array, must implement {@code Comparable<Type>}
  *
@@ -24,6 +28,9 @@ import java.util.function.BinaryOperator;
  */
 public class OrderedArray <E extends Comparable<E>>{
 	/**
+	 * Clones an object according to the copy constructor of the object<br>
+	 * <b>UNTESTED</b>
+	 *
 	 * @param  <T>
 	 * @param  obj
 	 * @return                           A new instance of the object
@@ -53,7 +60,7 @@ public class OrderedArray <E extends Comparable<E>>{
 	 */
 	public static <T extends Comparable<T>> OrderedArray<T>
 	merge(final OrderedArray<T> arr1, final OrderedArray<T> arr2){
-		//Static methods still have access to private feilds of the same class, even if you don't use this
+		//Static methods still have access to private fields of the same class, even if you don't use this
 		final OrderedArray<T> destArr
 		=new OrderedArray<>(arr1.arr.length+arr2.arr.length);
 		int i=0, j=0, k=0;
@@ -80,12 +87,16 @@ public class OrderedArray <E extends Comparable<E>>{
 				destArr.arr[k++]=arr1.get(j++);
 			}
 		}
+		//Update destArray Size
+		destArr.size=arr1.size+arr2.size;
 		return destArr;
 	}
 
 	/**
-	 * Merges two arrays together and returns a <u>new</u> OrderedArray as well as new copyies of the
-	 * object according to the copy constructior of the object
+	 * Merges two arrays together and returns a <u>new</u> OrderedArray as well as new copies of the
+	 * object according to the copy constructor of the object.<br>
+	 * <br>
+	 * Must implement the copy constructor, not available with {@code <? extends Number>}
 	 *
 	 * @param  <T>
 	 *                                       The type of the arrays, must implement comparable
@@ -139,6 +150,8 @@ public class OrderedArray <E extends Comparable<E>>{
 				j++;
 			}
 		}
+		//Update destArray Size
+		destArr.size=arr1.size+arr2.size;
 		return destArr;
 	}
 
@@ -175,6 +188,7 @@ public class OrderedArray <E extends Comparable<E>>{
 	public OrderedArray(final int max, final E... collection){
 		//Copy the given array into this.arr and convert to supertype Object[]
 		this.arr=Arrays.copyOf(collection, max, Object[].class);
+
 		this.size=collection.length;
 		this.oddEvenSort();
 	}
@@ -199,8 +213,8 @@ public class OrderedArray <E extends Comparable<E>>{
 		if(flag.length>0&&flag[0]){
 			this.arr=new Object[orderedArray.arr.length];
 			for(int i=0; i<orderedArray.size; i++){
-				//Don't exactly know if this is correct
-				//Dynamicaly access the copy constructor to copy object
+				//XXX Don't exactly know if this is correct
+				//Dynamically access the copy constructor to copy object
 				final Class<?> e=orderedArray.get(i).getClass();
 				this.arr[i]
 					=e.getConstructor(e).newInstance(orderedArray.get(i));
@@ -299,15 +313,29 @@ public class OrderedArray <E extends Comparable<E>>{
 	}
 
 	/**
+	 * Gets the element at the given index
+	 *
 	 * @param  index
 	 *                   The value to get
 	 * @return       The boxed element at index
 	 */
 	@SuppressWarnings("unchecked")
 	public E get(final int index){
-		//Does not need to be cheked as it must be E or a subtype of E
+		//Does not need to be checked as it must be E or a subtype of E
 		//Only way to violate this is within this class
+		//Ex adding a non E object and calling to get it
 		return (E)this.arr[index];
+	}
+
+	/**
+	 * Gets the element as an object at the given index
+	 *
+	 * @param  index
+	 *                   The value to get
+	 * @return       The boxed element at index
+	 */
+	public Object getRaw(final int index){
+		return this.arr[index];
 	}
 
 	/**
@@ -359,16 +387,16 @@ public class OrderedArray <E extends Comparable<E>>{
 		for(int i=this.size-1; i>index-1; i--){
 			this.arr[i+1]=this.arr[i];
 		}
-		//Inserrt the value
+		//Insert the value
 		this.arr[index]=value;
 		this.size++;
-		//Return suggess
+		//Return success
 		return true;
 	}
 
 
 	/**
-	 * Adds all given values in a more effecent way than calling {@link #insert(Comparable)}
+	 * Adds all given values in a more efficient way than calling {@link #insert(Comparable)}
 	 *
 	 * @param  values
 	 *                    The values to add
@@ -411,7 +439,7 @@ public class OrderedArray <E extends Comparable<E>>{
 	 */
 	@SuppressWarnings("unchecked")
 	public int insert(final E... values){
-		final int[] between=new int[this.size+1],	//The array to hold the amout of items inbetween
+		final int[] between=new int[this.size+1],	//The array to hold the amount of items in between
 			position=new int[values.length];	//The array to hold the determined pre-positions of the values
 		for(int v=0; v<values.length; v++){
 			final E value=values[v];
@@ -440,17 +468,17 @@ public class OrderedArray <E extends Comparable<E>>{
 
 		//Get the distance to move each number
 		for(int i=1; i<between.length; i++){
-			//Add each previous number to get the sum of all the prevous numbers
+			//Add each previous number to get the sum of all the previous numbers
 			between[i]+=between[i-1];
 		}
 
 		//Move the numbers
 		for(int i=this.size-1; i>=0; i--){
-			//Shift each number the appropreate amount staring at the end
+			//Shift each number the appropriate amount staring at the end
 			//This way each number only needs to be moved once
 			this.arr[i+between[i]]=this.arr[i];
 		}
-		//Required to keep track of the sift ammount (Otherwise needs more operations to find null spots)
+		//Required to keep track of the sift amount (Otherwise needs more operations to find null spots)
 		final int[] shift=new int[this.size];
 
 		//Fill the spots and use binary insertion sorting
@@ -558,7 +586,7 @@ public class OrderedArray <E extends Comparable<E>>{
 		//Loop for each element and append it to the builder
 		for(int j=0; j<this.size-1; j++)
 			builder.append(this.get(j)).append(", ");
-		builder.append(this.get(this.size-1));//Don't append an extra ", "
+		if(this.size!=0) builder.append(this.get(this.size-1));//Don't append an extra ", "
 		builder.append("]");
 		return builder.toString();
 	}

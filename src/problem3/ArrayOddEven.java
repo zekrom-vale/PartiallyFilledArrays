@@ -55,11 +55,16 @@ public class ArrayOddEven{
 	public void oddEvenSort(){
 		boolean sorted=false;
 		while(!sorted){
+			//Assume it is sorted until otherwise proven not
 			sorted=true;
+			//Alternate odd and even
 			for(int s=0; s<2; s++){
 				for(int i=s; i<this.size-1; i+=2){
+					//Out of order, swap positions
 					if(this.arr[i]>this.arr[i+1]){
+						//Assumption was proved false
 						sorted=false;
+						//Swap values with temp
 						final long temp=this.arr[i];
 						this.arr[i]=this.arr[i+1];
 						this.arr[i+1]=temp;
