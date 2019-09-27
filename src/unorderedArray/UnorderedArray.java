@@ -400,7 +400,7 @@ public class UnorderedArray <E>{
 	public int insert(final E... elements){
 		int i=0;
 		while(i<elements.length){
-			if(this.size==this.arr.length) return i;
+			if(this.size==this.capacity()) return i;
 			this.arr[this.size++]=elements[i++];
 		}
 		return i;
@@ -412,8 +412,14 @@ public class UnorderedArray <E>{
 	 * @param value
 	 *                  The value to insert
 	 */
-	public void insert(final E value){
+	public boolean insert(final E value){
+		if(this.size==this.capacity())return false;
 		this.arr[this.size++]=value;
+		return true;
+	}
+	
+	public int capacity(){
+		return this.arr.length;
 	}
 
 	/**
