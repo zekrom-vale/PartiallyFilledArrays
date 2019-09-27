@@ -367,6 +367,19 @@ public class UnorderedArray <E>{
 	}
 
 	/**
+	 * For each element do the flowing<br>
+	 * return true to break, false to continue
+	 *
+	 * @param function
+	 *                     the lambda to execute on each value
+	 */
+	public void forEachBr(final Function<E, Boolean> function){
+		for(int i=0; i<this.size; i++){
+			if(function.apply(this.get(i))) break;
+		}
+	}
+
+	/**
 	 * @param  index
 	 *                   The value to get
 	 * @return       The boxed element at index
