@@ -26,7 +26,7 @@ import java.util.function.BinaryOperator;
  * @see        #merge(OrderedArray, OrderedArray)
  * @see        #mergeClone(OrderedArray, OrderedArray)
  */
-public class OrderedArray <E extends Comparable<E>>{
+public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass|&|interface|&|interface|...>
 	/**
 	 * Clones an object according to the copy constructor of the object<br>
 	 * <b>UNTESTED</b>
@@ -246,6 +246,19 @@ public class OrderedArray <E extends Comparable<E>>{
 		this.size=orderedArray.size;
 	}
 
+	public int binSearch(final E target){
+		return this.binSearch(target, 0, this.size()-1);
+	}
+
+	private int binSearch(final E target, final int lowerBound, final int upperBound){
+		if(lowerBound>upperBound)return -1;
+		final int index=(upperBound+lowerBound)/2;
+		final int comp=target.compareTo(this.get(index));
+		if(comp==0)return index;
+		if(comp>0)return this.binSearch(target, index+1, upperBound);
+		return this.binSearch(target, lowerBound, index-1);
+	}
+
 	/**
 	 * @return The capacity of the array
 	 */
@@ -327,6 +340,7 @@ public class OrderedArray <E extends Comparable<E>>{
 		return (E)this.arr[index];
 	}
 
+
 	/**
 	 * Gets the element as an object at the given index
 	 *
@@ -337,6 +351,7 @@ public class OrderedArray <E extends Comparable<E>>{
 	public Object getRaw(final int index){
 		return this.arr[index];
 	}
+
 
 	/**
 	 * Inserts the given value
@@ -393,7 +408,6 @@ public class OrderedArray <E extends Comparable<E>>{
 		//Return success
 		return true;
 	}
-
 
 	/**
 	 * Adds all given values in a more efficient way than calling {@link #insert(Comparable)}
@@ -510,7 +524,6 @@ public class OrderedArray <E extends Comparable<E>>{
 		return 0;
 	}
 
-
 	/**
 	 * Finds the one or two median values
 	 *
@@ -540,6 +553,20 @@ public class OrderedArray <E extends Comparable<E>>{
 		if(this.size%2==0) return this.size/2+.5f;
 		//If odd
 		return this.size/2;
+	}
+
+	private void mergeSort(final int start, final int end){
+		if(start==end)return;
+		final int middel=(start+end)/2;
+		this.mergeSort(start, middel);
+		this.mergeSort(middel+1, end);
+		//Sort
+		final Object[] arr1=Arrays.copyOfRange(this.arr, start, middel+1),
+			arr2=Arrays.copyOfRange(this.arr, middel, end);
+		
+		for(int i=start; i<=end; i++){
+			
+		}
 	}
 
 	/**
@@ -575,7 +602,7 @@ public class OrderedArray <E extends Comparable<E>>{
 	public int size(){
 		return this.size;
 	}
-
+	
 	/**
 	 * Formats the array to a string
 	 */
