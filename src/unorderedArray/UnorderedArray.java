@@ -162,11 +162,8 @@ public class UnorderedArray <E>{
 	 */
 	public boolean deleteIndex(int index){
 		if(index<this.size){
-			while(index<this.size-1){
-				this.arr[index]=this.arr[++index];
-			}
-			this.arr[index]=null;
-			this.size--;
+			while(index<this.size-1) this.arr[index]=this.arr[++index];
+			this.arr[--this.size]=null;
 			return true;
 		}
 		return false;
@@ -187,12 +184,12 @@ public class UnorderedArray <E>{
 			//Slice off the end to prevent moving a to be removed value
 			while(indexes.contains(this.size)){
 				removed.add(this.get(this.size));
-				this.arr[this.size--]=null;
+				this.arr[--this.size]=null;
 			}
 			//If i is not at the end of the array replace it with the last element
 			if(i!=this.size){
 				this.arr[i]=this.arr[this.size];
-				this.arr[this.size--]=null;
+				this.arr[--this.size]=null;
 			}
 		}
 		return removed;
@@ -209,7 +206,7 @@ public class UnorderedArray <E>{
 	public boolean deleteIndexQuick(final int index){
 		if(index<this.size){
 			this.arr[index]=this.arr[this.size];
-			this.arr[this.size--]=null;
+			this.arr[--this.size]=null;
 			return true;
 		}
 		return false;
@@ -225,7 +222,7 @@ public class UnorderedArray <E>{
 	public boolean deleteQuick(final E value){
 		final int i=this.find(value);
 		if(i!=-1){
-			this.arr[i]=this.arr[this.size--];
+			this.arr[i]=this.arr[--this.size];
 			return true;
 		}
 		return false;
