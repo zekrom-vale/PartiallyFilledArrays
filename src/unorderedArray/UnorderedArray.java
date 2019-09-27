@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * UnorderedArray class<br>
@@ -56,6 +57,13 @@ public class UnorderedArray <E>{
 	public UnorderedArray(final int max, final E... collection){
 		this.arr=Arrays.copyOf(collection, max, Object[].class);
 		this.size=collection.length;
+	}
+
+	/**
+	 * @return The maximum capacity of the array
+	 */
+	public int capacity(){
+		return this.arr.length;
 	}
 
 	/**
@@ -119,6 +127,7 @@ public class UnorderedArray <E>{
 		return removed;
 	}
 
+
 	/**
 	 * Removes all indicated values and jumbles the order
 	 *
@@ -131,7 +140,6 @@ public class UnorderedArray <E>{
 	public ArrayList<E> deleteAllQuick(final E... values){
 		return this.deleteIndexQuick(this.findFlat(values));
 	}
-
 
 	/**
 	 * Removes all instances of the indicated value and jumbles the order
@@ -154,8 +162,11 @@ public class UnorderedArray <E>{
 	 */
 	public boolean deleteIndex(int index){
 		if(index<this.size){
-			while(index<this.size) this.arr[index]=this.arr[++index];
-			this.arr[this.size--]=null;
+			while(index<this.size-1){
+				this.arr[index]=this.arr[++index];
+			}
+			this.arr[index]=null;
+			this.size--;
 			return true;
 		}
 		return false;
@@ -187,6 +198,7 @@ public class UnorderedArray <E>{
 		return removed;
 	}
 
+
 	/**
 	 * Removes the given index and jumbles the order
 	 *
@@ -202,7 +214,6 @@ public class UnorderedArray <E>{
 		}
 		return false;
 	}
-
 
 	/**
 	 * Removes the first given value and jumbles the order
@@ -253,6 +264,7 @@ public class UnorderedArray <E>{
 		return existance;
 	}
 
+
 	/**
 	 * Does the value exist in the array?
 	 *
@@ -266,7 +278,6 @@ public class UnorderedArray <E>{
 		}
 		return false;
 	}
-
 
 	/**
 	 * Find the given value
@@ -305,6 +316,7 @@ public class UnorderedArray <E>{
 		return index;
 	}
 
+
 	/**
 	 * Find the given value
 	 *
@@ -319,7 +331,6 @@ public class UnorderedArray <E>{
 		}
 		return indexes;
 	}
-
 
 	/**
 	 * Finds the indexes of the given elements
@@ -341,6 +352,7 @@ public class UnorderedArray <E>{
 		return index;
 	}
 
+
 	/**
 	 * For each element do the flowing
 	 *
@@ -352,7 +364,6 @@ public class UnorderedArray <E>{
 			consumer.accept(this.get(i));
 		}
 	}
-
 
 	/**
 	 * For each element do the flowing
@@ -373,19 +384,22 @@ public class UnorderedArray <E>{
 	 * @param function
 	 *                     the lambda to execute on each value
 	 */
-	public void forEachBr(final Function<E, Boolean> function){
+	public void forEachBr(final Predicate<E> function){
 		for(int i=0; i<this.size; i++){
-			if(function.apply(this.get(i))) break;
+			if(function.test(this.get(i))) break;
 		}
 	}
 
 	/**
+	 * Returns the object {@code E}, null if the index is not found<br>
+	 * Throws {@link ArrayIndexOutOfBoundsException} if out of array bounds
 	 * @param  index
 	 *                   The value to get
 	 * @return       The boxed element at index
 	 */
 	@SuppressWarnings("unchecked")
 	public E get(final int index){
+		if(index>this.size&&index<this.arr.length)return null;
 		return (E)this.arr[index];
 	}
 
@@ -412,14 +426,15 @@ public class UnorderedArray <E>{
 	 * @param value
 	 *                  The value to insert
 	 */
+	/**
+	 * @param  value
+	 *                   The value to insert
+	 * @return       A boolean indicating success
+	 */
 	public boolean insert(final E value){
 		if(this.size==this.capacity())return false;
 		this.arr[this.size++]=value;
 		return true;
-	}
-	
-	public int capacity(){
-		return this.arr.length;
 	}
 
 	/**
