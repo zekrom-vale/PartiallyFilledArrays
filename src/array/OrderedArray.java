@@ -243,21 +243,21 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 	@Override
 	public boolean insert(final E value){
 		//Can the item fit?
-		if(this.size==this.arr.length) return false;
+		if(this.size()==this.capacity()) return false;
 		//Search for insertion position with psudo-binary search
-		int lowerBound=0, upperBound=this.size-1, index=0;
+		int lowerBound=0, upperBound=this.size()-1, index=0;
 		while(lowerBound<=upperBound){
 			index=(lowerBound+upperBound)/2;
 			if(value.compareTo(this.get(index))>0) lowerBound=++index;	// it's in upper half
 			else upperBound=index-1;	// it's in lower half
 		}
 		//Move all elements after the position to make space
-		for(int i=this.size-1; i>index-1; i--){
-			this.arr[i+1]=this.arr[i];
+		for(int i=this.size()-1; i>index-1; i--){
+			this.set(i+1, this.get(i));
 		}
 		//Insert the value
-		this.arr[index]=value;
-		this.size++;
+		this.set(index, value);
+		this.setSize(this.size()+1);
 		//Return success
 		return true;
 	}
@@ -307,12 +307,13 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 	@Override
 	@SuppressWarnings("unchecked")
 	public int insert(final E... values){
-		final int[] between=new int[this.size+1],	//The array to hold the amount of items in between
+		//TODO check if it can fit
+		final int[] between=new int[this.size()+1],	//The array to hold the amount of items in between
 			position=new int[values.length];	//The array to hold the determined pre-positions of the values
 		for(int v=0; v<values.length; v++){
 			final E value=values[v];
 			//Find where values[v] goes via binary simi-insertion
-			int lowerBound=0, upperBound=this.size-1, index=0;
+			int lowerBound=0, upperBound=this.size()-1, index=0;
 			while(lowerBound<=upperBound){
 				index=(lowerBound+upperBound)/2;
 				if(value.compareTo(this.get(index))>0){
@@ -344,10 +345,10 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 		for(int i=this.size-1; i>=0; i--){
 			//Shift each number the appropriate amount staring at the end
 			//This way each number only needs to be moved once
-			this.arr[i+between[i]]=this.arr[i];
+			this.set(i+between[i], this.get(i));
 		}
 		//Required to keep track of the sift amount (Otherwise needs more operations to find null spots)
-		final int[] shift=new int[this.size];
+		final int[] shift=new int[this.size()];
 
 		//Fill the spots and use binary insertion sorting
 		for(int i=0; i<position.length; i++){
@@ -367,15 +368,16 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 					upperBound=index-1;	// it's in lower half
 				}
 			}
+			//Shift values
 			for(int j=top; j>index-1; j--){
-				this.arr[j+1]=this.arr[j];
+				this.set(j+1, this.get(j));
 			}
-			this.arr[index]=values[i];
+			this.set(index, values[i]);
 		}
 		//Increment size
-		this.size+=values.length;
+		this.setSize(this.size()+values.length);
 
-		return 0;
+		return values.length;
 	}
 
 	/**
@@ -390,7 +392,7 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 	 */
 	@Override
 	public E median(final BinaryOperator<E> average){
-		final int at=this.size/2;
+		final int at=this.size()/2;
 		//If even
 		if(this.size%2==0){
 			return average.apply(this.get(at), this.get(at+1));
@@ -406,7 +408,7 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 	@Override
 	public float medianIndex(){
 		//If even
-		if(this.size%2==0) return this.size/2+.5f;
+		if(this.size()%2==0) return this.size()/2+.5f;
 		//If odd
 		return this.size/2;
 	}
