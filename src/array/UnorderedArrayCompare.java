@@ -1,7 +1,8 @@
 package array;
 
+import java.lang.reflect.Array;
+import java.util.Random;
 import java.util.function.BinaryOperator;
-//TODO import  Array_sample code and Simple Sorting_sample
 /**
  * UnorderedArrayCompare class<br>
  *
@@ -87,32 +88,6 @@ extends UnorderedArray<E>{
 	public UnorderedArrayCompare(final int max, final E... collection){
 		super(max, collection);
 	}/**
-	 * Simple manual sort to assist in {@link #quickSort()}
-	 *
-	 * @param left
-	 *                  The left index to start at
-	 * @param right
-	 *                  The right index to stop at
-	 */
-	private void manualSort(final int left, final int right){
-		switch(right-left) {
-			case 0:
-				//If size 1 do nothing
-				return;
-			case 1:
-				//If size 2 swap if out of order
-				this.swapIf(left, right);
-				return;
-			case 2:
-				//If size 3 swap each position if out of order
-				this.swapIf(left, left+1);
-				this.swapIf(left, right);
-				this.swapIf(left+1, right);
-		}
-
-	}
-
-	/**
 	 * Sorts the unordered array based on {@link Comparable} implementation via Bubble Sort
 	 */
 	public void bubbleSort(){
@@ -154,45 +129,32 @@ extends UnorderedArray<E>{
 	}
 
 	/**
-	 * Sorts the unordered array based on {@link Comparable} implementation via Odd Even Sort
+	 * Simple manual sort to assist in {@link #quickSort()}
+	 *
+	 * @param left
+	 *                  The left index to start at
+	 * @param right
+	 *                  The right index to stop at
 	 */
-	public void oddEvenSort(){
-		boolean done=false;
-		while(!done){
-			done=true;
-			for(int s=0; s<2; s++){
-				for(int i=0; i<this.size(); i+=2){
-					if(this.get(i+1).compareTo(this.get(i+1))>0){
-						done=false;
-						final E obj=this.get(i);
-						this.set(i, this.get(i+1));
-						this.set(i+1, obj);
-					}
-				}
-			}
+	private void manualSort(final int left, final int right){
+		switch(right-left) {
+			case 0:
+				//If size 1 do nothing
+				return;
+			case 1:
+				//If size 2 swap if out of order
+				this.swapIf(left, right);
+				return;
+			case 2:
+				//If size 3 swap each position if out of order
+				this.swapIf(left, left+1);
+				this.swapIf(left, right);
+				this.swapIf(left+1, right);
 		}
+
 	}
 
-	//TODO TEST
 	/**
-	 * Sorts the unordered array based on {@link Comparable} implementation via Selection Sort
-	 */
-	public void selectionSort(){
-		for(int out=0; out<this.size()-1; out++){
-			final int min=out;
-			E minValue=this.get(min);
-			for(int in=out+1; in<this.size(); in++){
-				final E inValue=this.get(in);
-				//If out of order swap values
-				if(inValue.compareTo(minValue)<0){
-					this.set(out, minValue);
-					this.set(in, inValue);
-					//Update the minimum value to be correct
-					minValue=inValue;
-				}
-			}
-		}
-	}/**
 	 * Finds the median value, if it is even it will use the average function <br>
 	 * <b>Partly sorts the array</b>
 	 *
@@ -216,7 +178,6 @@ extends UnorderedArray<E>{
 		//We know the median is in the middle now
 		return this.get(mid);
 	}
-
 
 	/**
 	 * Internal median method
@@ -264,9 +225,7 @@ extends UnorderedArray<E>{
 		}
 		//If partition is less than the middle of the array search right
 		this.median(partition+1, right, mid, even);	//Search right
-	}
-
-	/**
+	}/**
 	 * Finds the one or two median values and returns it as an array<br>
 	 * <b>Partly sorts the array</b>
 	 *
@@ -289,6 +248,7 @@ extends UnorderedArray<E>{
 		arr[0]=this.get(mid);
 		return arr;
 	}
+
 
 	/**
 	 * Returns the pseudo-median value (checks 3 values)
@@ -328,6 +288,26 @@ extends UnorderedArray<E>{
 			//Must be mid or right
 
 			return this.get(mid).compareTo(this.get(right))>0?right:mid;
+	}
+
+	/**
+	 * Sorts the unordered array based on {@link Comparable} implementation via Odd Even Sort
+	 */
+	public void oddEvenSort(){
+		boolean done=false;
+		while(!done){
+			done=true;
+			for(int s=0; s<2; s++){
+				for(int i=0; i<this.size(); i+=2){
+					if(this.get(i+1).compareTo(this.get(i+1))>0){
+						done=false;
+						final E obj=this.get(i);
+						this.set(i, this.get(i+1));
+						this.set(i+1, obj);
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -394,6 +374,27 @@ extends UnorderedArray<E>{
 		//Recurse right and left sections
 		this.quickSort(left, partition-1);
 		this.quickSort(partition+1, right);
+	}
+
+	//TODO TEST
+	/**
+	 * Sorts the unordered array based on {@link Comparable} implementation via Selection Sort
+	 */
+	public void selectionSort(){
+		for(int out=0; out<this.size()-1; out++){
+			final int min=out;
+			E minValue=this.get(min);
+			for(int in=out+1; in<this.size(); in++){
+				final E inValue=this.get(in);
+				//If out of order swap values
+				if(inValue.compareTo(minValue)<0){
+					this.set(out, minValue);
+					this.set(in, inValue);
+					//Update the minimum value to be correct
+					minValue=inValue;
+				}
+			}
+		}
 	}
 
 	/**

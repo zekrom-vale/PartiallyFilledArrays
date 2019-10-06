@@ -18,6 +18,7 @@ import java.util.function.Predicate;
  * @param  <E>
  *                 The element type
  */
+@SuppressWarnings("hiding")
 
 public class UnorderedArray <E>{
 	/**
@@ -493,19 +494,19 @@ public class UnorderedArray <E>{
 	}
 
 	/**
+	 * Changes the size of the array
+	 * @param size the size of the array to set to
+	 */
+	protected void setSize(final int size){
+		this.size=size;
+	}
+
+
+	/**
 	 * @return The current size of the array
 	 */
 	public int size(){
 		return this.size;
-	}
-	
-	
-	/* 
-	 * Changes the size of the array
-	 * @param size the size of the array to set to
-	 */
-	protected void setSize(int size){
-		this.size=size;
 	}
 
 	/**

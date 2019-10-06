@@ -1,7 +1,6 @@
 package array;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.function.BinaryOperator;
 
 /**
@@ -26,7 +25,8 @@ import java.util.function.BinaryOperator;
  * @see        #merge(OrderedArray, OrderedArray)
  * @see        #mergeClone(OrderedArray, OrderedArray)
  */
-public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompare{	//<|E| extends |supperclass|&|interface|&|interface|...>
+public class OrderedArray <E extends Comparable<E>>
+extends UnorderedArrayCompare<E>{	//<|E| extends |supperclass|&|interface|&|interface|...>
 	/**
 	 * Clones an object according to the copy constructor of the object<br>
 	 * <b>UNTESTED</b>
@@ -64,7 +64,7 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 		final OrderedArray<T> destArr
 		=new OrderedArray<>(arr1.capacity()+arr2.capacity());
 		int i=0, j=0, k=0;
-		while(i<arr1.size&&j<arr2.size){
+		while(i<arr1.size()&&j<arr2.size()){
 			//Find the lowest value in arr1 and arr2 (Already sorted)
 			if(arr1.get(i).compareTo(arr2.get(j))<0){
 				destArr.set(k++, arr1.get(i++));//If arr1 is smaller put arr1[i] in to dest
@@ -81,9 +81,9 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 			}
 		}
 		//If arr2 has more
-		else if(j<arr2.size){
+		else if(j<arr2.size()){
 			//Copy data from arr2 to dest
-			while(j<arr1.size){
+			while(j<arr1.size()){
 				destArr.set(k++, arr2.get(j++));
 			}
 		}
@@ -112,11 +112,11 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
 	 */
-	@SuppressWarnings("javadoc")
+	@SuppressWarnings({"javadoc"})
 	public static <T extends Comparable<T>> OrderedArray<T>
 	mergeClone(final OrderedArray<T> arr1, final OrderedArray<T> arr2) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
 		final OrderedArray<T> destArr
-		=new OrderedArray<>(arr1.arr.length+arr2.arr.length);
+		=new OrderedArray<>(arr1.capacity()+arr2.capacity());
 		int i=0, j=0, k=0;
 		while(i<arr1.size()&&j<arr2.size()){
 			//Find the lowest value in arr1 and arr2 (Already sorted)
@@ -139,9 +139,9 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 			}
 		}
 		//If arr2 has more
-		else if(j<arr2.size){
+		else if(j<arr2.size()){
 			//Copy data from arr2 to dest
-			while(j<arr1.size){
+			while(j<arr1.size()){
 				destArr.set(k++, OrderedArray.clone(arr2.get(j)));//Otherwise put arr2[j] into dest
 				j++;
 			}
@@ -172,39 +172,39 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 		this.quickSort();
 	}
 
-	public int binSearch(final E target){
-		return this.binSearch(target, 0, this.size()-1);
+	/**
+	 * Searches the array via binary search
+	 *
+	 * @param  target
+	 *                    The element to find
+	 * @return        The found element's index
+	 */
+	@Override
+	public int find(final E target){
+		return this.find(target, 0, this.size()-1);
 	}
 
-	private int binSearch(final E target, final int lowerBound, final int upperBound){
+	/**
+	 * Inner find method
+	 *
+	 * @param  target
+	 *                        The element to find
+	 * @param  lowerBound
+	 *                        The lower index to consider
+	 * @param  upperBound
+	 *                        The upper index to consider
+	 * @return            The index of the element
+	 */
+	private int
+	find(final E target, final int lowerBound, final int upperBound){
 		if(lowerBound>upperBound)return -1;
 		final int index=(upperBound+lowerBound)/2;
 		final int comp=target.compareTo(this.get(index));
 		if(comp==0)return index;
-		if(comp>0)return this.binSearch(target, index+1, upperBound);
-		return this.binSearch(target, lowerBound, index-1);
+		if(comp>0) return this.find(target, index+1, upperBound);
+		return this.find(target, lowerBound, index-1);
 	}
 
-	/**
-	 * Finds the given value
-	 *
-	 * @param  value
-	 *                   The value to find
-	 * @return       the index of the value
-	 */
-	@Override
-	public int find(final E value){
-		int lowerBound=0, upperBound=this.size-1, index;
-
-		while(lowerBound<=upperBound){
-			index=(lowerBound+upperBound)/2;
-			if(value.compareTo(this.get(index))==0) return index;	//Found target
-			if(value.compareTo(this.get(index))>0) lowerBound=index+1;	// it's in upper half
-			else upperBound=index-1;	// it's in lower half
-		}
-		return -1;
-	}
-	
 	/**
 	 * Inserts the given value
 	 *
@@ -342,7 +342,7 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 		}
 
 		//Move the numbers
-		for(int i=this.size-1; i>=0; i--){
+		for(int i=this.size()-1; i>=0; i--){
 			//Shift each number the appropriate amount staring at the end
 			//This way each number only needs to be moved once
 			this.set(i+between[i], this.get(i));
@@ -394,7 +394,7 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 	public E median(final BinaryOperator<E> average){
 		final int at=this.size()/2;
 		//If even
-		if(this.size%2==0){
+		if(this.size()%2==0){
 			return average.apply(this.get(at), this.get(at+1));
 		}
 		//If odd
@@ -405,33 +405,28 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 	 * @return The median of the OrderedArray<br>
 	 *         Returns n.5 if the size is even
 	 */
-	@Override
 	public float medianIndex(){
 		//If even
 		if(this.size()%2==0) return this.size()/2+.5f;
 		//If odd
-		return this.size/2;
+		return this.size()/2;
 	}
 
 	/*
-	private void mergeSort(final int start, final int end){
-		if(start==end)return;
-		final int middel=(start+end)/2;
-		this.mergeSort(start, middel);
-		this.mergeSort(middel+1, end);
-		//Sort
-		final Object[] arr1=Arrays.copyOfRange(this.arr, start, middel+1),
-			arr2=Arrays.copyOfRange(this.arr, middel, end);
-		
-		for(int i=start; i<=end; i++){
-			
-		}
-	}
-	*/
+	 * private void mergeSort(final int start, final int end){ if(start==end)return; final int
+	 * middle=(start+end)/2; this.mergeSort(start, middle); this.mergeSort(Middle+1, end); //Sort final
+	 * Object[] arr1=Arrays.copyOfRange(this.arr, start, middle+1), arr2=Arrays.copyOfRange(this.arr,
+	 * middle, end);
+	 * 
+	 * for(int i=start; i<=end; i++){
+	 * 
+	 * } }
+	 */
 
 	/**
 	 * Sorts the array according to compare
 	 */
+	@Override
 	public void oddEvenSort(){
 		boolean done=false;
 		while(!done){
@@ -447,7 +442,7 @@ public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompar
 						//Swap positions with temp variable
 						//Java does not support deconstruction assignment
 						//This would allow us to not use a variable
-						final Object obj=this.get(i);
+						final E obj=this.get(i);
 						this.set(i, this.get(i+1));
 						this.set(i+1, obj);
 					}
