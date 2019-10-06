@@ -26,7 +26,7 @@ import java.util.function.BinaryOperator;
  * @see        #merge(OrderedArray, OrderedArray)
  * @see        #mergeClone(OrderedArray, OrderedArray)
  */
-public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass|&|interface|&|interface|...>
+public class OrderedArray <E extends Comparable<E>> extends UnorderedArrayCompare{	//<|E| extends |supperclass|&|interface|&|interface|...>
 	/**
 	 * Clones an object according to the copy constructor of the object<br>
 	 * <b>UNTESTED</b>
@@ -62,33 +62,33 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 	merge(final OrderedArray<T> arr1, final OrderedArray<T> arr2){
 		//Static methods still have access to private fields of the same class, even if you don't use this
 		final OrderedArray<T> destArr
-		=new OrderedArray<>(arr1.arr.length+arr2.arr.length);
+		=new OrderedArray<>(arr1.capacity()+arr2.capacity());
 		int i=0, j=0, k=0;
 		while(i<arr1.size&&j<arr2.size){
 			//Find the lowest value in arr1 and arr2 (Already sorted)
 			if(arr1.get(i).compareTo(arr2.get(j))<0){
-				destArr.arr[k++]=arr1.get(i++);//If arr1 is smaller put arr1[i] in to dest
+				destArr.set(k++, arr1.get(i++));//If arr1 is smaller put arr1[i] in to dest
 			}
 			else{
-				destArr.arr[k++]=arr1.get(j++);//Otherwise put arr2[j] into dest
+				destArr.set(k++, arr2.get(j++));//Otherwise put arr2[j] into dest
 			}
 		}
 		//If arr1 has more
-		if(i<arr1.size){
+		if(i<arr1.size()){
 			//Copy data from arr1 to dest
-			while(i<arr1.size){
-				destArr.arr[k++]=arr1.get(i++);
+			while(i<arr1.size()){
+				destArr.set(k++, arr1.get(i++));
 			}
 		}
 		//If arr2 has more
 		else if(j<arr2.size){
 			//Copy data from arr2 to dest
 			while(j<arr1.size){
-				destArr.arr[k++]=arr1.get(j++);
+				destArr.set(k++, arr2.get(j++));
 			}
 		}
 		//Update destArray Size
-		destArr.size=arr1.size+arr2.size;
+		destArr.setSize(arr1.size()+arr2.size());
 		return destArr;
 	}
 
@@ -118,26 +118,23 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 		final OrderedArray<T> destArr
 		=new OrderedArray<>(arr1.arr.length+arr2.arr.length);
 		int i=0, j=0, k=0;
-		while(i<arr1.size&&j<arr2.size){
+		while(i<arr1.size()&&j<arr2.size()){
 			//Find the lowest value in arr1 and arr2 (Already sorted)
 			final T I=arr1.get(i), J=arr2.get(j);
 			if(I.compareTo(J)<0){
-				destArr.arr[k++]
-					=OrderedArray.clone(I);//If arr1 is smaller put arr1[i] in to dest
+				destArr.set(k++, OrderedArray.clone(I));//If arr1 is smaller put arr1[i] in to dest
 				i++;
 			}
 			else{
-				destArr.arr[k++]
-					=OrderedArray.clone(J);//Otherwise put arr2[j] into dest
+				destArr.set(k++, OrderedArray.clone(J));//Otherwise put arr2[j] into dest
 				j++;
 			}
 		}
 		//If arr1 has more
-		if(i<arr1.size){
+		if(i<arr1.size()){
 			//Copy data from arr1 to dest
-			while(i<arr1.size){
-				destArr.arr[k++]
-					=OrderedArray.clone(arr1.get(i));//If arr1 is smaller put arr1[i] in to dest
+			while(i<arr1.size()){
+				destArr.set(k++, OrderedArray.clone(arr1.get(i)));//If arr1 is smaller put arr1[i] in to dest
 				i++;
 			}
 		}
@@ -145,28 +142,14 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 		else if(j<arr2.size){
 			//Copy data from arr2 to dest
 			while(j<arr1.size){
-				destArr.arr[k++]
-					=OrderedArray.clone(arr1.get(j));//Otherwise put arr2[j] into dest
+				destArr.set(k++, OrderedArray.clone(arr2.get(j)));//Otherwise put arr2[j] into dest
 				j++;
 			}
 		}
 		//Update destArray Size
-		destArr.size=arr1.size+arr2.size;
+		destArr.setSize(arr1.size()+arr2.size());
 		return destArr;
 	}
-
-
-	/**
-	 * Reference to array
-	 */
-	private final Object[] arr;
-
-
-	/**
-	 * Current size of array
-	 */
-	private int size;
-
 
 	/**
 	 * @param max
@@ -174,8 +157,7 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 	 */
 	public OrderedArray(final int max){
 		//Crate a generic supertype to hold the generic type
-		this.arr=new Object[max];
-		this.size=0;
+		super(max);
 	}
 
 	/**
@@ -186,64 +168,8 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 	 */
 	@SafeVarargs
 	public OrderedArray(final int max, final E... collection){
-		//Copy the given array into this.arr and convert to supertype Object[]
-		this.arr=Arrays.copyOf(collection, max, Object[].class);
-
-		this.size=collection.length;
-		this.oddEvenSort();
-	}
-
-	/**
-	 * Copies the OrderedArray
-	 *
-	 * @param  orderedArray
-	 *                                       The OrderedArray to copy
-	 * @param  flag
-	 *                                       use true to use copy constructor
-	 * @throws NoSuchMethodException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 */
-	@SuppressWarnings("javadoc")
-	public OrderedArray(
-		final OrderedArray<E> orderedArray, final Boolean... flag
-		) throws NoSuchMethodException, InstantiationException,
-	IllegalAccessException, InvocationTargetException{
-		if(flag.length>0&&flag[0]){
-			this.arr=new Object[orderedArray.arr.length];
-			for(int i=0; i<orderedArray.size; i++){
-				//XXX Don't exactly know if this is correct
-				//Dynamically access the copy constructor to copy object
-				final Class<?> e=orderedArray.get(i).getClass();
-				this.arr[i]
-					=e.getConstructor(e).newInstance(orderedArray.get(i));
-			}
-			this.size=orderedArray.size;
-		}
-		else{
-			this.arr=new Object[orderedArray.arr.length];
-			for(int i=0; i<orderedArray.size; i++){
-				this.arr[i]=orderedArray.arr[i];
-			}
-			this.size=orderedArray.size;
-		}
-	}
-
-	/**
-	 * Copies the OrderedArray
-	 *
-	 * @param orderedArray
-	 *                         The OrderedArray to copy
-	 * @param capacity
-	 *                         The new capacity of the array
-	 */
-	public OrderedArray(final OrderedArray<E> orderedArray, final int capacity){
-		this.arr=new Object[capacity];
-		for(int i=0; i<orderedArray.size&&i<capacity; i++){
-			this.arr[i]=orderedArray.arr[i];
-		}
-		this.size=orderedArray.size;
+		super(max, collection);
+		this.quickSort();
 	}
 
 	public int binSearch(final E target){
@@ -260,59 +186,13 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 	}
 
 	/**
-	 * @return The capacity of the array
-	 */
-	public int capacity(){
-		return this.arr.length;
-	}
-
-	/**
-	 * Removes the given value
-	 *
-	 * @param  value
-	 *                   The value to remove
-	 * @return       A boolean indicating success
-	 */
-	public boolean delete(final E value){
-		int i=this.find(value);
-		if(i!=-1){
-			while(i<this.size) this.arr[i]=this.arr[++i];
-			this.size--;
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Removes the given index
-	 *
-	 * @param  index
-	 *                   The index to remove
-	 * @return       A boolean indicating success
-	 */
-	public boolean deleteIndex(int index){
-		if(0<=index&&index<this.size){
-			while(index<this.size) this.arr[index]=this.arr[++index];
-			this.size--;
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Prints the array to the console
-	 */
-	public void display(){
-		System.out.println(this.toString());
-	}
-
-	/**
 	 * Finds the given value
 	 *
 	 * @param  value
 	 *                   The value to find
 	 * @return       the index of the value
 	 */
+	@Override
 	public int find(final E value){
 		int lowerBound=0, upperBound=this.size-1, index;
 
@@ -324,35 +204,7 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 		}
 		return -1;
 	}
-
-	/**
-	 * Gets the element at the given index
-	 *
-	 * @param  index
-	 *                   The value to get
-	 * @return       The boxed element at index
-	 */
-	@SuppressWarnings("unchecked")
-	public E get(final int index){
-		//Does not need to be checked as it must be E or a subtype of E
-		//Only way to violate this is within this class
-		//Ex adding a non E object and calling to get it
-		return (E)this.arr[index];
-	}
-
-
-	/**
-	 * Gets the element as an object at the given index
-	 *
-	 * @param  index
-	 *                   The value to get
-	 * @return       The boxed element at index
-	 */
-	public Object getRaw(final int index){
-		return this.arr[index];
-	}
-
-
+	
 	/**
 	 * Inserts the given value
 	 *
@@ -388,6 +240,7 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 	 *
 	 * @return       A boolean indicating success
 	 */
+	@Override
 	public boolean insert(final E value){
 		//Can the item fit?
 		if(this.size==this.arr.length) return false;
@@ -451,6 +304,7 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 	 *                </pre>
 	 *
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public int insert(final E... values){
 		final int[] between=new int[this.size+1],	//The array to hold the amount of items in between
@@ -534,6 +388,7 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 	 *
 	 * @return         The median value
 	 */
+	@Override
 	public E median(final BinaryOperator<E> average){
 		final int at=this.size/2;
 		//If even
@@ -548,6 +403,7 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 	 * @return The median of the OrderedArray<br>
 	 *         Returns n.5 if the size is even
 	 */
+	@Override
 	public float medianIndex(){
 		//If even
 		if(this.size%2==0) return this.size/2+.5f;
@@ -555,6 +411,7 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 		return this.size/2;
 	}
 
+	/*
 	private void mergeSort(final int start, final int end){
 		if(start==end)return;
 		final int middel=(start+end)/2;
@@ -568,6 +425,7 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 			
 		}
 	}
+	*/
 
 	/**
 	 * Sorts the array according to compare
@@ -579,7 +437,7 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 			//Even index for s=0 and odd index for s=1
 			for(int s=0; s<2; s++){
 				//Loop through the even or odd indexes of the array
-				for(int i=s; i<this.size-1; i+=2){
+				for(int i=s; i<this.size()-1; i+=2){
 					//If out of order
 					if(this.get(i).compareTo(this.get(i+1))>0){
 						//Set done to false
@@ -587,34 +445,12 @@ public class OrderedArray <E extends Comparable<E>>{	//<|E| extends |supperclass
 						//Swap positions with temp variable
 						//Java does not support deconstruction assignment
 						//This would allow us to not use a variable
-						final Object obj=this.arr[i];
-						this.arr[i]=this.arr[i+1];
-						this.arr[i+1]=obj;
+						final Object obj=this.get(i);
+						this.set(i, this.get(i+1));
+						this.set(i+1, obj);
 					}
 				}
 			}
 		}
-	}
-
-	/**
-	 * @return The current size of the array
-	 */
-	public int size(){
-		return this.size;
-	}
-	
-	/**
-	 * Formats the array to a string
-	 */
-	@Override
-	public String toString(){
-		final StringBuilder builder=new StringBuilder();
-		builder.append("[");
-		//Loop for each element and append it to the builder
-		for(int j=0; j<this.size-1; j++)
-			builder.append(this.get(j)).append(", ");
-		if(this.size!=0) builder.append(this.get(this.size-1));//Don't append an extra ", "
-		builder.append("]");
-		return builder.toString();
 	}
 }
