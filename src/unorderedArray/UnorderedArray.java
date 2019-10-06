@@ -1,5 +1,6 @@
 package unorderedArray;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -46,7 +47,7 @@ public class UnorderedArray <E>{
 	}
 
 	/**
-	 * Crates an empty unordered array
+	 * Crates an filled unordered array
 	 *
 	 * @param max
 	 *                       The maximum size of the array
@@ -57,6 +58,60 @@ public class UnorderedArray <E>{
 	public UnorderedArray(final int max, final E... collection){
 		this.arr=Arrays.copyOf(collection, max, Object[].class);
 		this.size=collection.length;
+	}
+
+
+	/**
+	 * Copies the OrderedArray
+	 *
+	 * @param  unorderedArray
+	 *                                       The OrderedArray to copy
+	 * @param  flag
+	 *                                       use true to use copy constructor
+	 * @throws NoSuchMethodException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
+	@SuppressWarnings("javadoc")
+	public UnorderedArray(
+		final UnorderedArray<E> unorderedArray, final Boolean... flag
+		) throws NoSuchMethodException, InstantiationException,
+	IllegalAccessException, InvocationTargetException{
+		if(flag.length>0&&flag[0]){
+			this.arr=new Object[unorderedArray.arr.length];
+			for(int i=0; i<unorderedArray.size; i++){
+				//XXX Don't exactly know if this is correct
+				//Dynamically access the copy constructor to copy object
+				final Class<?> e=unorderedArray.get(i).getClass();
+				this.arr[i]
+					=e.getConstructor(e).newInstance(unorderedArray.get(i));
+			}
+			this.size=unorderedArray.size;
+		}
+		else{
+			this.arr=new Object[unorderedArray.arr.length];
+			for(int i=0; i<unorderedArray.size; i++){
+				this.arr[i]=unorderedArray.arr[i];
+			}
+			this.size=unorderedArray.size;
+		}
+	}
+
+	/**
+	 * Copies the OrderedArray
+	 *
+	 * @param unorderedArray
+	 *                         The OrderedArray to copy
+	 * @param capacity
+	 *                         The new capacity of the array
+	 */
+	public UnorderedArray(final UnorderedArray<E> unorderedArray, final int capacity){
+		this.arr=new Object[capacity];
+		for(int i=0; i<unorderedArray.size&&i<capacity; i++){
+			this.arr[i]=unorderedArray.arr[i];
+		}
+		this.size=unorderedArray.size;
 	}
 
 	/**
@@ -463,7 +518,7 @@ public class UnorderedArray <E>{
 		//Loop for each element and append it to the builder
 		for(int j=0; j<this.size-1; j++)
 			builder.append(this.arr[j]).append(", ");
-		builder.append(this.arr[this.size-1]);//Don't append an extra ", "
+		if(this.size!=0) builder.append(this.arr[this.size-1]);//Don't append an extra ", "
 		builder.append("]");
 		return builder.toString();
 	}
