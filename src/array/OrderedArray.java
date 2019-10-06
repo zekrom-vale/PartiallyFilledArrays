@@ -186,7 +186,7 @@ extends UnorderedArrayCompare<E>{	//<|E| extends |supperclass|&|interface|&|inte
 
 	/**
 	 * Inner find method
-	 *
+	 * 
 	 * @param  target
 	 *                        The element to find
 	 * @param  lowerBound
@@ -196,7 +196,7 @@ extends UnorderedArrayCompare<E>{	//<|E| extends |supperclass|&|interface|&|inte
 	 * @return            The index of the element
 	 */
 	private int
-	find(final E target, final int lowerBound, final int upperBound){
+		find(final E target, final int lowerBound, final int upperBound){
 		if(lowerBound>upperBound)return -1;
 		final int index=(upperBound+lowerBound)/2;
 		final int comp=target.compareTo(this.get(index));
@@ -413,14 +413,19 @@ extends UnorderedArrayCompare<E>{	//<|E| extends |supperclass|&|interface|&|inte
 	}
 
 	/*
-	 * private void mergeSort(final int start, final int end){ if(start==end)return; final int
-	 * middle=(start+end)/2; this.mergeSort(start, middle); this.mergeSort(Middle+1, end); //Sort final
-	 * Object[] arr1=Arrays.copyOfRange(this.arr, start, middle+1), arr2=Arrays.copyOfRange(this.arr,
-	 * middle, end);
-	 * 
-	 * for(int i=start; i<=end; i++){
-	 * 
-	 * } }
+	private void mergeSort(final int start, final int end){
+		if(start==end)return;
+		final int middle=(start+end)/2;
+		this.mergeSort(start, middle);
+		this.mergeSort(Middle+1, end);
+		//Sort
+		final Object[] arr1=Arrays.copyOfRange(this.arr, start, middle+1),
+			arr2=Arrays.copyOfRange(this.arr, middle, end);
+
+		for(int i=start; i<=end; i++){
+
+		}
+	}
 	 */
 
 	/**
