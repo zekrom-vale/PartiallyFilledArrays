@@ -498,6 +498,15 @@ public class UnorderedArray <E>{
 	public int size(){
 		return this.size;
 	}
+	
+	
+	/* 
+	 * Changes the size of the array
+	 * @param size the size of the array to set to
+	 */
+	protected void setSize(int size){
+		this.size=size;
+	}
 
 	/**
 	 * Formats the array to a string
