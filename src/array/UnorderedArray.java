@@ -8,7 +8,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * CoreArray class<br>
+ * UnorderedArray class<br>
  *
  * Unordered Partly filled Array, with no sorting functionality
  *
@@ -19,7 +19,7 @@ import java.util.function.Predicate;
  *                 The element type
  */
 
-public class CoreArray <E>{
+public class UnorderedArray <E>{
 	/**
 	 * Array reference
 	 */
@@ -33,18 +33,18 @@ public class CoreArray <E>{
 
 
 	/**
-	 * Crates an empty CoreArray
+	 * Crates an empty UnorderedArray
 	 *
 	 * @param max
 	 *                The maximum size of the array
 	 */
-	public CoreArray(final int max){
+	public UnorderedArray(final int max){
 		this.arr=new Object[max];//Init the array
 		this.size=0;	//Empty array
 	}
 
 	/**
-	 * Crates an filled CoreArray
+	 * Crates an filled UnorderedArray
 	 *
 	 * @param max
 	 *                       The maximum size of the array
@@ -52,17 +52,17 @@ public class CoreArray <E>{
 	 *                       The values to init with
 	 */
 	@SafeVarargs
-	public CoreArray(final int max, final E... collection){
+	public UnorderedArray(final int max, final E... collection){
 		this.arr=Arrays.copyOf(collection, max, Object[].class);
 		this.size=collection.length;
 	}
 
 
 	/**
-	 * Copies the CoreArray
+	 * Copies the UnorderedArray
 	 *
 	 * @param  unorderedArray
-	 *                                       The CoreArray to copy
+	 *                                       The UnorderedArray to copy
 	 * @param  flag
 	 *                                       use true to use copy constructor
 	 * @throws NoSuchMethodException
@@ -71,8 +71,8 @@ public class CoreArray <E>{
 	 * @throws InvocationTargetException
 	 */
 	@SuppressWarnings("javadoc")
-	public CoreArray(
-		final CoreArray<E> unorderedArray, final Boolean... flag
+	public UnorderedArray(
+		final UnorderedArray<E> unorderedArray, final Boolean... flag
 		) throws NoSuchMethodException, InstantiationException,
 	IllegalAccessException, InvocationTargetException{
 		if(flag.length>0&&flag[0]){
@@ -96,14 +96,14 @@ public class CoreArray <E>{
 	}
 
 	/**
-	 * Copies the CoreArray
+	 * Copies the UnorderedArray
 	 *
 	 * @param unorderedArray
 	 *                         The CoreArray to copy
 	 * @param capacity
 	 *                         The new capacity of the array
 	 */
-	public CoreArray(final CoreArray<E> unorderedArray, final int capacity){
+	public UnorderedArray(final UnorderedArray<E> unorderedArray, final int capacity){
 		this.arr=new Object[capacity];
 		for(int i=0; i<unorderedArray.size&&i<capacity; i++){
 			this.arr[i]=unorderedArray.arr[i];
