@@ -307,6 +307,8 @@ extends UnorderedArrayCompare<E>{	//<|E| extends |supperclass|&|interface|&|inte
 	@Override
 	@SuppressWarnings("unchecked")
 	public int insert(final E... values){
+		//Memory complexity: s+s+1+n+5
+
 		//TODO check if it can fit
 		final int[] between=new int[this.size()+1],	//The array to hold the amount of items in between
 			position=new int[values.length];	//The array to hold the determined pre-positions of the values
@@ -348,6 +350,7 @@ extends UnorderedArrayCompare<E>{	//<|E| extends |supperclass|&|interface|&|inte
 			this.set(i+between[i], this.get(i));
 		}
 		//Required to keep track of the sift amount (Otherwise needs more operations to find null spots)
+		//TODO replace shift with alternate algorithm
 		final int[] shift=new int[this.size()];
 
 		//Fill the spots and use binary insertion sorting
