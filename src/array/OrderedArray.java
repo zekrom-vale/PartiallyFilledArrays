@@ -186,7 +186,7 @@ extends UnorderedArrayCompare<E>{	//<|E| extends |supperclass|&|interface|&|inte
 
 	/**
 	 * Inner find method
-	 * 
+	 *
 	 * @param  target
 	 *                        The element to find
 	 * @param  lowerBound
@@ -196,7 +196,7 @@ extends UnorderedArrayCompare<E>{	//<|E| extends |supperclass|&|interface|&|inte
 	 * @return            The index of the element
 	 */
 	private int
-		find(final E target, final int lowerBound, final int upperBound){
+	find(final E target, final int lowerBound, final int upperBound){
 		if(lowerBound>upperBound)return -1;
 		final int index=(upperBound+lowerBound)/2;
 		final int comp=target.compareTo(this.get(index));
@@ -353,7 +353,7 @@ extends UnorderedArrayCompare<E>{	//<|E| extends |supperclass|&|interface|&|inte
 		//Fill the spots and use binary insertion sorting
 		for(int i=0; i<position.length; i++){
 			int lowerBound=position[i]+						//Where it would be before shift
-				between[position[i]],						//Where it is after shift
+				(position[i]==0?0:between[position[i]]),	//Where it is after shift
 				upperBound=lowerBound+shift[position[i]],	//Shift if more than one fits in hole
 				index=lowerBound;							//Current index
 			final int top=upperBound;
@@ -361,6 +361,11 @@ extends UnorderedArrayCompare<E>{	//<|E| extends |supperclass|&|interface|&|inte
 			//Find the right hole
 			while(lowerBound<=upperBound){
 				index=(lowerBound+upperBound)/2;
+				if(this.get(index)==null){
+					if(position[i]==0) --index;
+					else++index;
+					break;	//Prevent null pointer exception
+				}
 				if(values[i].compareTo(this.get(index))>0){
 					lowerBound=++index;	// it's in upper half
 				}
